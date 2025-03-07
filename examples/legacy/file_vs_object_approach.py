@@ -19,10 +19,10 @@ logging.basicConfig(level=logging.INFO,
 logger = logging.getLogger(__name__)
 
 # Input/output paths for examples
-INPUT_CAR = "../samplefiles/1NEC/NEC_0H.car"
-INPUT_MDF = "../samplefiles/1NEC/NEC_0H.mdf" 
-FF_MAPPING = "../mappings/charge_to_ff.json"
-CHARGE_MAPPING = "../mappings/ff_to_charge.json"
+INPUT_CAR = "../../tests/data/1NEC/NEC_0H.car"
+INPUT_MDF = "../../tests/data/1NEC/NEC_0H.mdf" 
+FF_MAPPING = "../../tests/data/mappings/charge_to_ff.json"
+CHARGE_MAPPING = "../../tests/data/mappings/ff_to_charge.json"
 
 # Create output directory if needed
 OUTPUT_DIR = "comparison_outputs"
@@ -37,9 +37,9 @@ def run_file_based_approach():
     start_time = time()
     
     # Import file-based transformation functions
-    from moltools.transformers.update_ff import update_ff_types
-    from moltools.transformers.update_charges import update_charges
-    from moltools.transformers.grid import replicate_grid
+    from src.transformers.legacy.update_ff import update_ff_types
+    from src.transformers.legacy.update_charges import update_charges
+    from src.transformers.legacy.grid import replicate_grid
     
     # Step 1: Update force field types (with intermediate files)
     ff_output_car = os.path.join(OUTPUT_DIR, "file_step1.car")
@@ -103,7 +103,7 @@ def run_object_based_approach():
     start_time = time()
     
     # Import object-based pipeline
-    from moltools.pipeline import MolecularPipeline
+    from src.pipeline import MolecularPipeline
     
     # Create output paths
     output_car = os.path.join(OUTPUT_DIR, "object_final.car")
@@ -134,7 +134,7 @@ def run_object_based_with_debug():
     start_time = time()
     
     # Import object-based pipeline
-    from moltools.pipeline import MolecularPipeline
+    from src.pipeline import MolecularPipeline
     
     # Create output paths
     output_car = os.path.join(OUTPUT_DIR, "object_debug_final.car")

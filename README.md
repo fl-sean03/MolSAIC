@@ -223,15 +223,18 @@ monet/
 │   ├── unit/                    # Unit tests
 │   ├── integration/             # Integration tests
 │   └── data/                    # Test data files
-├── monet/                       # Main package
+│       ├── 1NEC/                # Single molecule test data
+│       ├── 3NEC/                # Multi-molecule test data
+│       └── mappings/            # Mapping files for testing
+├── src/                         # Main package
 │   ├── models/                  # Data models
 │   ├── parsers/                 # File parsers
 │   ├── writers/                 # File writers
 │   ├── transformers/            # Transformations
 │   │   └── legacy/              # Legacy implementations
 │   ├── external_tools/          # External tool integrations
-│   └── templates/               # Pipeline templates
-├── mappings/                    # Mapping files
+│   ├── templates/               # Pipeline templates
+│   └── utils/                   # Utility functions
 ```
 
 ## License

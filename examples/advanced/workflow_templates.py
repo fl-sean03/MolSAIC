@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO,
 logger = logging.getLogger(__name__)
 
 # Import workflow templates
-from moltools.templates.workflows import (
+from src.templates.workflows import (
     create_grid_pipeline,
     create_ff_update_pipeline,
     create_charge_update_pipeline,
@@ -21,10 +21,10 @@ from moltools.templates.workflows import (
 )
 
 # Input/output paths for example
-INPUT_CAR = "../samplefiles/1NEC/NEC_0H.car"
-INPUT_MDF = "../samplefiles/1NEC/NEC_0H.mdf" 
-FF_MAPPING = "../mappings/charge_to_ff.json"
-CHARGE_MAPPING = "../mappings/ff_to_charge.json"
+INPUT_CAR = "../../tests/data/1NEC/NEC_0H.car"
+INPUT_MDF = "../../tests/data/1NEC/NEC_0H.mdf" 
+FF_MAPPING = "../../tests/data/mappings/charge_to_ff.json"
+CHARGE_MAPPING = "../../tests/data/mappings/ff_to_charge.json"
 
 # Create output directory if needed
 OUTPUT_DIR = "template_outputs"
