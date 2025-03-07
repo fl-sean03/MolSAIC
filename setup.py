@@ -32,7 +32,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "monet=monet.cli:main",
+            "monet=src.cli:main",
         ],
     },
     include_package_data=True,
