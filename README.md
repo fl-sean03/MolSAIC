@@ -214,18 +214,23 @@ monet/
 │   ├── tutorials/               # Tutorial markdown files
 │   ├── architecture/            # Architecture documentation
 │   └── examples/                # Example usage docs
-├── examples/                    # Example scripts
-│   ├── basic/                   # Basic usage examples
-│   ├── advanced/                # Advanced usage examples
-│   └── tutorials/               # Code for tutorials
-├── benchmarks/                  # Performance benchmarking scripts
-├── tests/                       # Test suite
-│   ├── unit/                    # Unit tests
-│   ├── integration/             # Integration tests
-│   └── data/                    # Test data files
-│       ├── 1NEC/                # Single molecule test data
-│       ├── 3NEC/                # Multi-molecule test data
-│       └── mappings/            # Mapping files for testing
+├── research/                    # Research, testing and examples
+│   ├── benchmarks/              # Performance benchmarking scripts
+│   │   └── profiles/            # Profiling scripts
+│   ├── data/                    # Test data files
+│   │   ├── molecules/           # Molecular structure files
+│   │   │   ├── 1NEC/            # Single molecule test data
+│   │   │   └── 3NEC/            # Multi-molecule test data
+│   │   └── mappings/            # Mapping files for testing
+│   ├── examples/                # Example scripts
+│   │   ├── basic/               # Basic usage examples
+│   │   ├── advanced/            # Advanced usage examples
+│   │   ├── legacy/              # Legacy approach examples
+│   │   └── tutorials/           # Tutorial code
+│   └── tests/                   # Test suite
+│       ├── unit/                # Unit tests
+│       ├── integration/         # Integration tests
+│       └── standalone/          # Standalone test scripts
 ├── src/                         # Main package
 │   ├── models/                  # Data models
 │   ├── parsers/                 # File parsers
