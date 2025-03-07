@@ -5,17 +5,17 @@ Basic usage tutorial for moltools package.
 This tutorial demonstrates the basic usage of the moltools package.
 """
 
-from moltools.models.system import MolecularSystem
-from moltools.parsers.car_parser import CARParser
-from moltools.parsers.mdf_parser import MDFParser
-from moltools.transformers.grid import GridTransformer
+from src.models.system import MolecularSystem
+from src.parsers.car_parser import CARParser
+from src.parsers.mdf_parser import MDFParser
+from src.transformers.grid import GridTransformer
 
 def main():
     """Main tutorial function."""
     # Load a system from CAR/MDF files
     print("Loading system from CAR/MDF files...")
-    car_parser = CARParser("tests/data/1NEC/NEC_0H.car")
-    mdf_parser = MDFParser("tests/data/1NEC/NEC_0H.mdf")
+    car_parser = CARParser("../../data/molecules/1NEC/NEC_0H.car")
+    mdf_parser = MDFParser("../../data/molecules/1NEC/NEC_0H.mdf")
     
     # Parse the files
     car_data = car_parser.parse()

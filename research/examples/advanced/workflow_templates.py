@@ -21,10 +21,10 @@ from src.templates.workflows import (
 )
 
 # Input/output paths for example
-INPUT_CAR = "../../tests/data/1NEC/NEC_0H.car"
-INPUT_MDF = "../../tests/data/1NEC/NEC_0H.mdf" 
-FF_MAPPING = "../../tests/data/mappings/charge_to_ff.json"
-CHARGE_MAPPING = "../../tests/data/mappings/ff_to_charge.json"
+INPUT_CAR = "../../data/molecules/1NEC/NEC_0H.car"
+INPUT_MDF = "../../data/molecules/1NEC/NEC_0H.mdf" 
+FF_MAPPING = "../../data/mappings/charge_to_ff.json"
+CHARGE_MAPPING = "../../data/mappings/ff_to_charge.json"
 
 # Create output directory if needed
 OUTPUT_DIR = "template_outputs"

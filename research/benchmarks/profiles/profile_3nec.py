@@ -9,19 +9,19 @@ import io
 import time
 from pathlib import Path
 
-from moltools.parsers.car_parser import parse_car, car_blocks_to_molecules
-from moltools.parsers.mdf_parser import parse_mdf
-from moltools.transformers.grid import grid_from_files, generate_grid_files
-from moltools.transformers.update_ff import update_ff_types
-from moltools.transformers.update_charges import update_charges
+from src.parsers.car_parser import parse_car, car_blocks_to_molecules
+from src.parsers.mdf_parser import parse_mdf
+from src.transformers.legacy.grid import grid_from_files, generate_grid_files
+from src.transformers.legacy.update_ff import update_ff_types
+from src.transformers.legacy.update_charges import update_charges
 
 # Path to sample files
-SAMPLE_PATH = Path("samplefiles/3NEC")
+SAMPLE_PATH = Path("../../data/molecules/3NEC")
 CAR_FILE = SAMPLE_PATH / "3_NEC0H.car"
 MDF_FILE = SAMPLE_PATH / "3_NEC0H.mdf"
 
 # Output files
-OUTPUT_PATH = Path("test_outputs")
+OUTPUT_PATH = Path("./outputs")
 GRID_CAR = OUTPUT_PATH / "grid_3nec.car"
 GRID_MDF = OUTPUT_PATH / "grid_3nec.mdf"
 FF_CAR = OUTPUT_PATH / "ff_3nec.car"
@@ -30,9 +30,12 @@ CHARGE_CAR = OUTPUT_PATH / "charge_3nec.car"
 CHARGE_MDF = OUTPUT_PATH / "charge_3nec.mdf"
 
 # Mapping files
-MAPPING_PATH = Path("mappings")
+MAPPING_PATH = Path("../../data/mappings")
 CHARGE_TO_FF = MAPPING_PATH / "charge_to_ff.json"
 FF_TO_CHARGE = MAPPING_PATH / "ff_to_charge.json"
+
+# Create output directory if needed
+OUTPUT_PATH.mkdir(exist_ok=True)
 
 def profile_grid_generation():
     """Profile grid generation with 3NEC files."""
