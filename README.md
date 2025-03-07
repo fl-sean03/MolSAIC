@@ -214,7 +214,7 @@ monet/
 │   ├── tutorials/               # Tutorial markdown files
 │   ├── architecture/            # Architecture documentation
 │   └── examples/                # Example usage docs
-├── research/                    # Research, testing and examples
+├── resources/                   # Resources, testing and examples
 │   ├── benchmarks/              # Performance benchmarking scripts
 │   │   └── profiles/            # Profiling scripts
 │   ├── data/                    # Test data files

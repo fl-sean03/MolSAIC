@@ -51,7 +51,7 @@ test_outputs/
 
 # Project specific
 profile_*.py
-!research/benchmarks/profiles/profile_*.py
+!resources/benchmarks/profiles/profile_*.py
 *.bak
 *.log
 *.tmp
