@@ -238,7 +238,8 @@ monet/
 │   ├── writers/                 # File writers
 │   ├── transformers/            # Transformations
 │   │   └── legacy/              # Legacy implementations
-│   └── external_tools/          # External tool integrations
+│   ├── external_tools/          # External tool integrations
+│   └── templates/               # Pipeline templates
 ```
 
 ## License
