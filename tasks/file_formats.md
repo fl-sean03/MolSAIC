@@ -1,6 +1,6 @@
-## Comprehensive Guide to Molecular File Formats (.pdb, .car, .mdf)
+# Molecular File Formats Reference
 
-This document provides detailed specifications for the `.pdb`, `.car`, and `.mdf` file formats, describing headers, data entries, footers, column sizes, and whitespace requirements. These formats represent molecular structures and systems precisely and are compatible with software such as Materials Studio.
+This document provides detailed specifications for the molecular file formats supported by MONET, describing headers, data entries, footers, column sizes, and whitespace requirements. These formats represent molecular structures and systems precisely and are compatible with software such as Materials Studio.
 
 ### 1. PDB File Format
 

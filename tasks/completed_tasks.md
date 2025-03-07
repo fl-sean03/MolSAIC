@@ -1,57 +1,64 @@
-# MolTools Completed Tasks
+# MONET Development History
 
-## Task 1: Repository Structure Setup
-- [x] Create basic directory structure
-- [x] Add empty __init__.py files
-- [x] Create placeholder modules
+This document tracks the development history of the MONET project, providing a chronological record of implemented features and enhancements.
 
-## Task 2: Implement Core Data Models
-- [x] Implement Atom class
-- [x] Implement Molecule class
-- [x] Implement System class
+## Phase 1: Foundation & Core Functionality
 
-## Task 3: Implement File Parsers
-- [x] MDF parser
-- [x] CAR parser
-- [x] (Optional) PDB parser
+### Task 1: Repository Structure Setup ✅
+- Created basic directory structure
+- Added empty __init__.py files
+- Created placeholder modules
 
-## Task 4: Implement File Writers
-- [x] MDF writer
-- [x] CAR writer
+### Task 2: Implement Core Data Models ✅
+- Implemented Atom class with properties for coordinates, element, charge, and force field type
+- Implemented Molecule class with atom collections and connectivity information
+- Implemented System class to manage collections of molecules with PBC support
 
-## Task 5: Implement Transformers
-- [x] Grid replication
-- [x] Force-field update
-- [x] Charge update
+### Task 3: Implement File Parsers ✅
+- Created MDF parser with force field and connectivity support
+- Developed CAR parser for coordinates and structural information
+- Added experimental PDB parser with basic functionality
 
-## Task 6: Implement CLI and Configuration
-- [x] Set up config module
-- [x] Create CLI with subcommands
+### Task 4: Implement File Writers ✅
+- Implemented MDF writer with proper formatting and whitespace
+- Created CAR writer with coordinate and structural information
 
-## Task 7: Unit Tests
-- [x] Tests for parsers
-- [x] Tests for models
-- [x] Tests for transformers
+### Task 5: Implement Transformers ✅
+- Developed Grid replication transformer for periodic systems
+- Implemented Force-field update transformer based on charge/element mapping
+- Created Charge update transformer based on force-field type
 
-## Task 8: Documentation
-- [x] Add docstrings
-- [x] Create README.md
+### Task 6: Implement CLI and Configuration ✅
+- Set up configuration module with default settings
+- Created CLI with subcommands for all major functionality
 
-## Task 9: Integration Testing with Sample Files
-- [x] Test parsing 1NEC sample files (CAR, MDF, PDB)
-- [x] Test grid replication with 1NEC files
-- [x] Verify the output matches expected structure and PBC
-- [x] Test force-field update with 1NEC files
-- [x] Test charge update with 1NEC files
-- [x] Test parsing 3NEC sample files (CAR, MDF, PDB)
-- [x] Compare 1NEC and 3NEC file handling differences
+### Task 7: Unit Tests ✅
+- Implemented tests for parsers to ensure correct file reading
+- Created tests for data models with property validation
+- Added tests for transformers to verify correct operations
 
-## Task 10: Package and Installation
-- [x] Create a functioning setup.py for installation
-- [x] Test pip install development mode
-- [x] Create examples directory with sample command scripts
-- [x] Create a requirements.txt file
-- [x] Test CLI commands using entrypoint
+## Phase 2: API Design & Documentation
+
+### Task 8: Documentation ✅
+- Added comprehensive docstrings to all classes and methods
+- Created detailed README.md with usage examples
+- Added installation instructions and feature overview
+
+### Task 9: Integration Testing ✅
+- Implemented tests using 1NEC sample files (CAR, MDF, PDB)
+- Validated grid replication functionality with real molecular data
+- Verified outputs match expected structure and periodic boundary conditions
+- Validated force-field update functionality with mapping files
+- Tested charge update with sample force-field types
+- Performed comparative testing between 1NEC and 3NEC sample systems
+
+### Task 10: Package and Installation ✅
+- Created setup.py for proper package installation
+- Tested pip installation in development mode
+- Added examples directory with sample usage scripts
+- Set up proper package metadata and entry points
+- Implemented requirements.txt for dependency management
+- Tested CLI commands using installed entrypoints
 
 ## Task 11: Sample Mapping Files
 - [x] Create sample charge to force-field type mapping JSON

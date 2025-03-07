@@ -1,6 +1,10 @@
-# MolTools Implementation Summary
+# MONET Implementation Summary
 
-This document summarizes the implementation progress for the MolTools package, focusing on the recent architecture evolution from file-based to object-based transformations.
+This document summarizes key implementation milestones for the MONET package, particularly focusing on the evolution from file-based to object-based transformation architecture.
+
+For a complete development history, see [Development History](tasks/completed_tasks.md).
+
+For future plans and upcoming features, see [Implementation Tasks](tasks/tasks.md).
 
 ## Completed Tasks
 
