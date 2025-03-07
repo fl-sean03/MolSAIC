@@ -1,6 +1,6 @@
-# MolTools
+# MONET (MOlecular NEtwork Toolkit)
 
-MolTools is a Python package for processing molecular data files (MDF, CAR, PDB) that supports tasks such as grid replication, force-field updates, and charge corrections.
+MONET is a comprehensive molecular toolkit for processing molecular data files (MDF, CAR, PDB) that supports tasks such as grid replication, force-field updates, and charge corrections.
 
 ## Features
 
@@ -20,10 +20,10 @@ MolTools is a Python package for processing molecular data files (MDF, CAR, PDB)
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/moltools.git
+git clone https://github.com/molsim-lab/monet.git
 
 # Navigate to the directory
-cd moltools
+cd monet
 
 # Install the package
 pip install -e .
@@ -33,14 +33,14 @@ pip install -e .
 
 ### Command Line Interface
 
-MolTools provides a CLI with several subcommands:
+MONET provides a CLI with several subcommands:
 
 #### Grid Replication
 
 Replicate a template molecule in a 3D grid:
 
 ```bash
-python -m moltools.cli grid --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output-mdf grid_box.mdf --output-car grid_box.car
+python -m monet.cli grid --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output-mdf grid_box.mdf --output-car grid_box.car
 ```
 
 This creates an 8×8×8 grid of molecules with a 2.0 Å gap between them.
@@ -50,7 +50,7 @@ This creates an 8×8×8 grid of molecules with a 2.0 Å gap between them.
 Update force-field types based on a mapping file:
 
 ```bash
-python -m moltools.cli update-ff --car input.car --output-car updated.car --mapping mapping.json
+python -m monet.cli update-ff --car input.car --output-car updated.car --mapping mapping.json
 ```
 
 The mapping file should be a JSON file with keys in the format `"(charge, element)"` and values as the new force-field type:
@@ -67,7 +67,7 @@ The mapping file should be a JSON file with keys in the format `"(charge, elemen
 Update atomic charges based on a force-field type mapping:
 
 ```bash
-python -m moltools.cli update-charges --mdf input.mdf --output-mdf updated.mdf --mapping charge_mapping.json
+python -m monet.cli update-charges --mdf input.mdf --output-mdf updated.mdf --mapping charge_mapping.json
 ```
 
 The mapping file should be a JSON file mapping force-field types to charges:
@@ -84,7 +84,7 @@ The mapping file should be a JSON file mapping force-field types to charges:
 Convert Material Studio files to NAMD format (PDB/PSF) using the MSI2NAMD external tool:
 
 ```bash
-python -m moltools.cli convert-to-namd --mdf input.mdf --car input.car --output-dir namd_output --residue-name MOL
+python -m monet.cli convert-to-namd --mdf input.mdf --car input.car --output-dir namd_output --residue-name MOL
 ```
 
 Additional options:
@@ -94,26 +94,26 @@ Additional options:
 
 #### Processing Modes
 
-MolTools uses the object-based pipeline architecture by default. This approach has several advantages:
+MONET uses the object-based pipeline architecture by default. This approach has several advantages:
 - No intermediate files required for chained operations
 - Better memory efficiency
 - Debug mode for intermediate outputs
 
 For example:
 ```bash
-python -m moltools.cli grid --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output-mdf grid_box.mdf --output-car grid_box.car
+python -m monet.cli grid --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output-mdf grid_box.mdf --output-car grid_box.car
 ```
 
 You can enable debug output for intermediate steps with the `--debug-output` flag:
 
 ```bash
-python -m moltools.cli update-ff --debug-output --debug-prefix "debug_" --mdf input.mdf --car input.car --output-mdf output.mdf --output-car output.car --mapping mapping.json
+python -m monet.cli update-ff --debug-output --debug-prefix "debug_" --mdf input.mdf --car input.car --output-mdf output.mdf --output-car output.car --mapping mapping.json
 ```
 
 If you need to use the legacy file-based approach, you can use the `--file-mode` flag, but note that this mode is deprecated and will be removed in version 2.0.0:
 
 ```bash
-python -m moltools.cli grid --file-mode --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output-mdf grid_box.mdf --output-car grid_box.car
+python -m monet.cli grid --file-mode --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output-mdf grid_box.mdf --output-car grid_box.car
 ```
 
 > **DEPRECATED**: The file-based approach is deprecated and will be removed in version 2.0.0. Please use the object-based pipeline as shown above.
@@ -125,7 +125,7 @@ python -m moltools.cli grid --file-mode --mdf input.mdf --car input.car --grid 8
 The recommended pipeline API allows chaining multiple transformations:
 
 ```python
-from moltools.pipeline import MolecularPipeline
+from monet.pipeline import MolecularPipeline
 
 # Chain all operations in a fluent API
 (MolecularPipeline()
@@ -168,7 +168,7 @@ pipeline.save('output.car', 'output.mdf')
 While it is not recommended, you can still use the legacy file-based API programmatically if absolutely necessary:
 
 ```python
-from moltools.transformers.legacy.grid import generate_grid_files
+from monet.transformers.legacy.grid import generate_grid_files
 
 # Generate a grid from input files (deprecated)
 generate_grid_files(
@@ -188,18 +188,18 @@ A detailed guide for migrating from the deprecated file-based API to the recomme
 Quick example:
 ```python
 # OLD (deprecated):
-from moltools.transformers.legacy.grid import generate_grid_files
+from monet.transformers.legacy.grid import generate_grid_files
 generate_grid_files(car_file="in.car", mdf_file="in.mdf", output_car="out.car", output_mdf="out.mdf")
 
 # NEW (recommended):
-from moltools.pipeline import MolecularPipeline
+from monet.pipeline import MolecularPipeline
 pipeline = MolecularPipeline()
 pipeline.load("in.car", "in.mdf").generate_grid().save("out.car", "out.mdf")
 ```
 
 ## File Format Support
 
-MolTools supports the following file formats:
+MONET supports the following file formats:
 
 - **MDF** (Materials Studio Molecular Data Format): Contains force-field information and connectivity data
 - **CAR** (Materials Studio Coordinate Archive): Contains atomic coordinates and molecule structure
@@ -208,7 +208,7 @@ MolTools supports the following file formats:
 ## Repository Structure
 
 ```
-moltools/
+monet/
 ├── docs/                        # Documentation 
 │   ├── api/                     # API reference docs
 │   ├── tutorials/               # Tutorial markdown files
@@ -223,7 +223,7 @@ moltools/
 │   ├── unit/                    # Unit tests
 │   ├── integration/             # Integration tests
 │   └── data/                    # Test data files
-├── moltools/                    # Main package
+├── monet/                       # Main package
 │   ├── models/                  # Data models
 │   ├── parsers/                 # File parsers
 │   ├── writers/                 # File writers
@@ -231,7 +231,6 @@ moltools/
 │   │   └── legacy/              # Legacy implementations
 │   ├── external_tools/          # External tool integrations
 │   └── templates/               # Pipeline templates
-├── samplefiles/                 # Sample data files
 ├── mappings/                    # Mapping files
 ```
 
@@ -247,8 +246,8 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for det
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/moltools.git
-cd moltools
+git clone https://github.com/molsim-lab/monet.git
+cd monet
 ```
 
 2. Install in development mode
