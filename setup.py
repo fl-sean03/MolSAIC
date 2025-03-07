@@ -8,15 +8,15 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setup(
     name="moltools",
     version="0.2.0",
-    author="MolTools Team",
-    author_email="author@example.com",
+    author="Molecular Simulation Laboratory",
+    author_email="moltools-dev@example.org",
     description="Tools for processing molecular data files",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/example/moltools",
+    url="https://github.com/molsim-lab/moltools",
     project_urls={
-        "Bug Tracker": "https://github.com/example/moltools/issues",
-        "Documentation": "https://github.com/example/moltools/docs",
+        "Bug Tracker": "https://github.com/molsim-lab/moltools/issues",
+        "Documentation": "https://github.com/molsim-lab/moltools/docs",
     },
     classifiers=[
         "Programming Language :: Python :: 3",
