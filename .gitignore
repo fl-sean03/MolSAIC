@@ -1,0 +1,80 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# Temporary files
+*.swp
+*~
+
+# Test output files
+test_outputs/
+
+# Project specific
+profile_*.py
+*.bak
+*.log
+*.tmp
+
+# Large data files
+*.xyz
+*.tar.gz
+*.tar.bz2
+*.zip
+*.pdb
+!samplefiles/**/*.pdb
+*.car
+!samplefiles/**/*.car
+*.mdf
+!samplefiles/**/*.mdf
+
+# Potentially sensitive content
+*_sensitive*
+*_private*
+*credentials*
+*password*
+*secret*
+*.key
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Other work directories
+**/trials/
+**/experiments/
