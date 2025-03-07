@@ -57,11 +57,11 @@ profile_*.py
 *.tar.bz2
 *.zip
 *.pdb
-!samplefiles/**/*.pdb
+!tests/data/**/*.pdb
 *.car
-!samplefiles/**/*.car
+!tests/data/**/*.car
 *.mdf
-!samplefiles/**/*.mdf
+!tests/data/**/*.mdf
 
 # Potentially sensitive content
 *_sensitive*

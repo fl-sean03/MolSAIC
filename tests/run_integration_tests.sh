@@ -5,6 +5,11 @@
 # Exit on error
 set -e
 
+# Change to project root directory if script is run from tests directory
+if [[ $(basename $(pwd)) == "tests" ]]; then
+    cd ..
+fi
+
 echo "===================="
 echo "Running integration tests"
 echo "===================="
@@ -36,10 +41,10 @@ echo "===================="
 mkdir -p examples/outputs
 
 echo "Running file vs object approach example..."
-python examples/file_vs_object_approach.py
+python examples/legacy/file_vs_object_approach.py
 
 echo "Running pipeline example..."
-python examples/pipeline_example.py
+python examples/advanced/pipeline_example.py
 
 echo ""
 echo "All tests completed successfully!"
