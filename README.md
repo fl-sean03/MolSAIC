@@ -269,4 +269,4 @@ chmod +x .git/hooks/pre-commit
 
 ## Acknowledgments
 
-- This package was developed to support research in computational chemistry and materials science.
+- This package was developed to support research in computational chemistry and materials science.# MONET
