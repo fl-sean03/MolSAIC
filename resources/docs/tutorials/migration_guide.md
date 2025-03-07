@@ -4,7 +4,7 @@ This guide provides information and examples to help you migrate your code from 
 
 ## Why Migrate?
 
-The file-based API in MolTools is **deprecated** and will be removed in version 2.0.0. Here's why you should migrate:
+The file-based API in MONET is **deprecated** and will be removed in version 2.0.0. Here's why you should migrate:
 
 - **Better Performance**: The object-based API eliminates intermediate file I/O for chained operations
 - **More Features**: New features like external tools integration are only available in the object-based API
@@ -18,7 +18,7 @@ The file-based API in MolTools is **deprecated** and will be removed in version 
 
 **Old (deprecated):**
 ```python
-from moltools.transformers.legacy.grid import generate_grid_files
+from src.transformers.legacy.grid import generate_grid_files
 
 generate_grid_files(
     car_file="input.car",
@@ -33,7 +33,7 @@ generate_grid_files(
 
 **New (recommended):**
 ```python
-from moltools.pipeline import MolecularPipeline
+from src.pipeline import MolecularPipeline
 
 pipeline = MolecularPipeline()
 pipeline.load("input.car", "input.mdf") \
@@ -45,7 +45,7 @@ pipeline.load("input.car", "input.mdf") \
 
 **Old (deprecated):**
 ```python
-from moltools.transformers.legacy.update_ff import update_ff_types
+from src.transformers.legacy.update_ff import update_ff_types
 
 update_ff_types(
     car_file="input.car",
@@ -58,7 +58,7 @@ update_ff_types(
 
 **New (recommended):**
 ```python
-from moltools.pipeline import MolecularPipeline
+from src.pipeline import MolecularPipeline
 
 pipeline = MolecularPipeline()
 pipeline.load("input.car", "input.mdf") \
@@ -70,7 +70,7 @@ pipeline.load("input.car", "input.mdf") \
 
 **Old (deprecated):**
 ```python
-from moltools.transformers.legacy.update_charges import update_charges
+from src.transformers.legacy.update_charges import update_charges
 
 update_charges(
     car_file="input.car",
@@ -83,7 +83,7 @@ update_charges(
 
 **New (recommended):**
 ```python
-from moltools.pipeline import MolecularPipeline
+from src.pipeline import MolecularPipeline
 
 pipeline = MolecularPipeline()
 pipeline.load("input.car", "input.mdf") \
@@ -95,9 +95,9 @@ pipeline.load("input.car", "input.mdf") \
 
 **Old (deprecated):**
 ```python
-from moltools.transformers.legacy.update_ff import update_ff_types
-from moltools.transformers.legacy.update_charges import update_charges
-from moltools.transformers.legacy.grid import generate_grid_files
+from src.transformers.legacy.update_ff import update_ff_types
+from src.transformers.legacy.update_charges import update_charges
+from src.transformers.legacy.grid import generate_grid_files
 
 # Multiple file operations with intermediate files
 update_ff_types(
@@ -128,7 +128,7 @@ generate_grid_files(
 
 **New (recommended):**
 ```python
-from moltools.pipeline import MolecularPipeline
+from src.pipeline import MolecularPipeline
 
 # All operations chained without intermediate files
 pipeline = MolecularPipeline()
@@ -145,12 +145,12 @@ pipeline.load("input.car", "input.mdf") \
 
 **Old (deprecated):**
 ```bash
-python -m moltools.cli grid --file-mode --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output-mdf grid_box.mdf --output-car grid_box.car
+python -m src.cli grid --file-mode --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output-mdf grid_box.mdf --output-car grid_box.car
 ```
 
 **New (recommended):**
 ```bash
-python -m moltools.cli grid --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output-mdf grid_box.mdf --output-car grid_box.car
+python -m src.cli grid --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output-mdf grid_box.mdf --output-car grid_box.car
 ```
 
 Simply remove the `--file-mode` flag to use the object-based pipeline by default.
@@ -159,24 +159,24 @@ Simply remove the `--file-mode` flag to use the object-based pipeline by default
 
 **Old (deprecated):**
 ```bash
-python -m moltools.cli update-ff --file-mode --mdf input.mdf --car input.car --output-mdf updated.mdf --output-car updated.car --mapping mapping.json
+python -m src.cli update-ff --file-mode --mdf input.mdf --car input.car --output-mdf updated.mdf --output-car updated.car --mapping mapping.json
 ```
 
 **New (recommended):**
 ```bash
-python -m moltools.cli update-ff --mdf input.mdf --car input.car --output-mdf updated.mdf --output-car updated.car --mapping mapping.json
+python -m src.cli update-ff --mdf input.mdf --car input.car --output-mdf updated.mdf --output-car updated.car --mapping mapping.json
 ```
 
 ### Charge Updates
 
 **Old (deprecated):**
 ```bash
-python -m moltools.cli update-charges --file-mode --mdf input.mdf --car input.car --output-mdf updated.mdf --output-car updated.car --mapping mapping.json
+python -m src.cli update-charges --file-mode --mdf input.mdf --car input.car --output-mdf updated.mdf --output-car updated.car --mapping mapping.json
 ```
 
 **New (recommended):**
 ```bash
-python -m moltools.cli update-charges --mdf input.mdf --car input.car --output-mdf updated.mdf --output-car updated.car --mapping mapping.json
+python -m src.cli update-charges --mdf input.mdf --car input.car --output-mdf updated.mdf --output-car updated.car --mapping mapping.json
 ```
 
 ## Advanced Pipeline Features
@@ -225,7 +225,7 @@ pipeline.update_ff_types("mappings/charge_to_ff.json")
 pipeline.save_checkpoint("checkpoint.pkl")
 
 # Later, or in another script
-from moltools.pipeline import MolecularPipeline
+from src.pipeline import MolecularPipeline
 pipeline = MolecularPipeline.load_checkpoint("checkpoint.pkl")
 pipeline.update_charges("mappings/ff_to_charge.json")
 pipeline.save("output.car", "output.mdf")

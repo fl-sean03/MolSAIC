@@ -209,11 +209,6 @@ MONET supports the following file formats:
 
 ```
 monet/
-├── docs/                        # Documentation 
-│   ├── api/                     # API reference docs
-│   ├── tutorials/               # Tutorial markdown files
-│   ├── architecture/            # Architecture documentation
-│   └── examples/                # Example usage docs
 ├── resources/                   # Resources, testing and examples
 │   ├── benchmarks/              # Performance benchmarking scripts
 │   │   └── profiles/            # Profiling scripts
@@ -222,6 +217,12 @@ monet/
 │   │   │   ├── 1NEC/            # Single molecule test data
 │   │   │   └── 3NEC/            # Multi-molecule test data
 │   │   └── mappings/            # Mapping files for testing
+│   ├── docs/                    # Documentation files
+│   │   ├── api/                 # API reference docs
+│   │   ├── architecture/        # Architecture documentation
+│   │   ├── examples/            # Example usage docs
+│   │   ├── tutorials/           # Tutorial markdown files
+│   │   └── usage/               # Usage guides
 │   ├── examples/                # Example scripts
 │   │   ├── basic/               # Basic usage examples
 │   │   ├── advanced/            # Advanced usage examples
