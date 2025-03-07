@@ -40,7 +40,7 @@ MONET provides a CLI with several subcommands:
 Replicate a template molecule in a 3D grid:
 
 ```bash
-python -m monet.cli grid --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output-mdf grid_box.mdf --output-car grid_box.car
+python -m src.cli grid --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output-mdf grid_box.mdf --output-car grid_box.car
 ```
 
 This creates an 8×8×8 grid of molecules with a 2.0 Å gap between them.
@@ -50,7 +50,7 @@ This creates an 8×8×8 grid of molecules with a 2.0 Å gap between them.
 Update force-field types based on a mapping file:
 
 ```bash
-python -m monet.cli update-ff --car input.car --output-car updated.car --mapping mapping.json
+python -m src.cli update-ff --car input.car --output-car updated.car --mapping mapping.json
 ```
 
 The mapping file should be a JSON file with keys in the format `"(charge, element)"` and values as the new force-field type:
@@ -67,7 +67,7 @@ The mapping file should be a JSON file with keys in the format `"(charge, elemen
 Update atomic charges based on a force-field type mapping:
 
 ```bash
-python -m monet.cli update-charges --mdf input.mdf --output-mdf updated.mdf --mapping charge_mapping.json
+python -m src.cli update-charges --mdf input.mdf --output-mdf updated.mdf --mapping charge_mapping.json
 ```
 
 The mapping file should be a JSON file mapping force-field types to charges:
@@ -84,7 +84,7 @@ The mapping file should be a JSON file mapping force-field types to charges:
 Convert Material Studio files to NAMD format (PDB/PSF) using the MSI2NAMD external tool:
 
 ```bash
-python -m monet.cli convert-to-namd --mdf input.mdf --car input.car --output-dir namd_output --residue-name MOL
+python -m src.cli convert-to-namd --mdf input.mdf --car input.car --output-dir namd_output --residue-name MOL
 ```
 
 Additional options:
@@ -101,19 +101,19 @@ MONET uses the object-based pipeline architecture by default. This approach has 
 
 For example:
 ```bash
-python -m monet.cli grid --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output-mdf grid_box.mdf --output-car grid_box.car
+python -m src.cli grid --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output-mdf grid_box.mdf --output-car grid_box.car
 ```
 
 You can enable debug output for intermediate steps with the `--debug-output` flag:
 
 ```bash
-python -m monet.cli update-ff --debug-output --debug-prefix "debug_" --mdf input.mdf --car input.car --output-mdf output.mdf --output-car output.car --mapping mapping.json
+python -m src.cli update-ff --debug-output --debug-prefix "debug_" --mdf input.mdf --car input.car --output-mdf output.mdf --output-car output.car --mapping mapping.json
 ```
 
 If you need to use the legacy file-based approach, you can use the `--file-mode` flag, but note that this mode is deprecated and will be removed in version 2.0.0:
 
 ```bash
-python -m monet.cli grid --file-mode --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output-mdf grid_box.mdf --output-car grid_box.car
+python -m src.cli grid --file-mode --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output-mdf grid_box.mdf --output-car grid_box.car
 ```
 
 > **DEPRECATED**: The file-based approach is deprecated and will be removed in version 2.0.0. Please use the object-based pipeline as shown above.
@@ -125,7 +125,7 @@ python -m monet.cli grid --file-mode --mdf input.mdf --car input.car --grid 8 --
 The recommended pipeline API allows chaining multiple transformations:
 
 ```python
-from monet.pipeline import MolecularPipeline
+from src.pipeline import MolecularPipeline
 
 # Chain all operations in a fluent API
 (MolecularPipeline()
@@ -168,7 +168,7 @@ pipeline.save('output.car', 'output.mdf')
 While it is not recommended, you can still use the legacy file-based API programmatically if absolutely necessary:
 
 ```python
-from monet.transformers.legacy.grid import generate_grid_files
+from src.transformers.legacy.grid import generate_grid_files
 
 # Generate a grid from input files (deprecated)
 generate_grid_files(
@@ -188,11 +188,11 @@ A detailed guide for migrating from the deprecated file-based API to the recomme
 Quick example:
 ```python
 # OLD (deprecated):
-from monet.transformers.legacy.grid import generate_grid_files
+from src.transformers.legacy.grid import generate_grid_files
 generate_grid_files(car_file="in.car", mdf_file="in.mdf", output_car="out.car", output_mdf="out.mdf")
 
 # NEW (recommended):
-from monet.pipeline import MolecularPipeline
+from src.pipeline import MolecularPipeline
 pipeline = MolecularPipeline()
 pipeline.load("in.car", "in.mdf").generate_grid().save("out.car", "out.mdf")
 ```
