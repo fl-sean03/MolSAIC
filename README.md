@@ -210,6 +210,7 @@ MONET supports the following file formats:
 ```
 monet/
 ├── resources/                   # Resources, testing and examples
+│   ├── architecture/            # Architecture documentation
 │   ├── benchmarks/              # Performance benchmarking scripts
 │   │   └── profiles/            # Profiling scripts
 │   ├── data/                    # Test data files
@@ -217,22 +218,21 @@ monet/
 │   │   │   ├── 1NEC/            # Single molecule test data
 │   │   │   └── 3NEC/            # Multi-molecule test data
 │   │   └── mappings/            # Mapping files for testing
-│   ├── docs/                    # Documentation files
-│   │   ├── api/                 # API reference docs
-│   │   ├── architecture/        # Architecture documentation
-│   │   ├── examples/            # Example usage docs
-│   │   ├── tutorials/           # Tutorial markdown files
-│   │   └── usage/               # Usage guides
 │   ├── examples/                # Example scripts
-│   │   ├── basic/               # Basic usage examples
 │   │   ├── advanced/            # Advanced usage examples
+│   │   ├── basic/               # Basic usage examples
+│   │   ├── docs/                # Example documentation
 │   │   ├── legacy/              # Legacy approach examples
-│   │   └── tutorials/           # Tutorial code
-│   └── tests/                   # Test suite
-│       ├── unit/                # Unit tests
-│       ├── integration/         # Integration tests
-│       └── standalone/          # Standalone test scripts
+│   │   └── tutorials/           # Tutorial code and documentation
+│   │       └── docs/            # Tutorial guides
+│   ├── tests/                   # Test suite
+│   │   ├── unit/                # Unit tests
+│   │   ├── integration/         # Integration tests
+│   │   └── standalone/          # Standalone test scripts
+│   └── usage/                   # Usage guides and quick start
 ├── src/                         # Main package
+│   ├── docs/                    # API documentation
+│   │   └── api/                 # API reference
 │   ├── models/                  # Data models
 │   ├── parsers/                 # File parsers
 │   ├── writers/                 # File writers
