@@ -238,9 +238,7 @@ monet/
 │   ├── writers/                 # File writers
 │   ├── transformers/            # Transformations
 │   │   └── legacy/              # Legacy implementations
-│   ├── external_tools/          # External tool integrations
-│   ├── templates/               # Pipeline templates
-│   └── utils/                   # Utility functions
+│   └── external_tools/          # External tool integrations
 ```
 
 ## License
