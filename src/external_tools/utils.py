@@ -103,7 +103,8 @@ def create_temp_file(prefix: str = 'molsaic_', suffix: str = '.tmp',
 def run_process(cmd: List[str], cwd: Optional[str] = None, 
                 env: Optional[Dict[str, str]] = None, 
                 timeout: Optional[int] = None,
-                capture_output: bool = True) -> Tuple[int, str, str]:
+                capture_output: bool = True,
+                stdin_file: Optional[str] = None) -> Tuple[int, str, str]:
     """
     Run an external process with proper error handling.
     
@@ -113,6 +114,7 @@ def run_process(cmd: List[str], cwd: Optional[str] = None,
         env: Environment variables
         timeout: Timeout in seconds
         capture_output: Whether to capture and return stdout/stderr
+        stdin_file: Optional file to provide as stdin to the process
         
     Returns:
         Tuple of (return_code, stdout, stderr)
@@ -146,11 +148,22 @@ def run_process(cmd: List[str], cwd: Optional[str] = None,
             logger.warning(f"Failed to save command log: {str(e)}")
     
     try:
+        # If stdin_file is provided, open it to feed to the subprocess
+        stdin_fh = None
+        if stdin_file:
+            logger.info(f"Using stdin file: {stdin_file}")
+            try:
+                stdin_fh = open(stdin_file, 'r')
+            except Exception as e:
+                logger.error(f"Failed to open stdin file: {e}")
+                raise RuntimeError(f"Failed to open stdin file: {e}")
+                
         # Always use subprocess.Popen to have more control over process execution
         process = subprocess.Popen(
             cmd,
             cwd=cwd,
             env=process_env,
+            stdin=stdin_fh if stdin_fh else None,
             stdout=subprocess.PIPE if capture_output else None,
             stderr=subprocess.PIPE if capture_output else None,
             text=True,

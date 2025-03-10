@@ -184,12 +184,12 @@ class PackmolTool(BaseExternalTool):
         # Build the command
         cmd = [self.executable_path]
         
-        # Add the input file parameter
-        # Packmol accepts input file with -i flag
-        cmd.extend(["-i", input_file])
-        
-        # Store the input file for reference
+        # Store the input file for stdin redirection
+        # Packmol requires input via stdin redirection (< input_file)
         input_info['final_input_file'] = input_file
+        input_info['stdin_file'] = input_file
+        
+        logger.info(f"Packmol will read input from: {input_file} via stdin")
         
         # Add timeout parameter if provided
         if 'timeout' in kwargs:

@@ -60,7 +60,7 @@
 1. ✅ Fix Packmol execution issues
    - ✅ Increase default timeout (from 300 to 900 seconds)
    - ✅ Add an explicit `--timeout` parameter to the packmol command
-   - ✅ Fix issue with Packmol input file handling (added explicit `-i` flag to pass input file)
+   - ✅ Fix issue with Packmol input file handling (properly uses stdin redirection as required by Packmol)
    - ⬜ Add better error handling and reporting for Packmol execution
 
 2. ⬜ Improve external tool output capture and display

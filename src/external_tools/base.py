@@ -231,11 +231,14 @@ class BaseExternalTool(abc.ABC):
             logger.info(f"Files in workspace: {', '.join(files_in_workspace)}")
             
             # Execute the command
+            # Check if the command includes stdin file information
+            stdin_file = input_info.get('stdin_file', None)
             return_code, stdout, stderr = run_process(
                 cmd=cmd,
                 cwd=workspace_path,
                 timeout=timeout,
-                capture_output=True
+                capture_output=True,
+                stdin_file=stdin_file
             )
             
             # Log files are now automatically created by run_process
