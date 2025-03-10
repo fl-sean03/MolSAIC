@@ -27,6 +27,7 @@ EXECUTABLES = {
     # - Absolute path to executable
     # - List of potential locations to check
     'msi2namd': os.environ.get('MOLTOOLS_MSI2NAMD_PATH', '/home/sf2/LabWork/software/msi2namd.exe'),
+    'packmol': os.environ.get('MOLTOOLS_PACKMOL_PATH', '/home/sf2/LabWork/software/packmol-20.15.3/packmol'),
 }
 
 # Maximum concurrent external processes

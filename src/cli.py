@@ -52,6 +52,14 @@ def main():
     # Subparsers for different commands
     subparsers = parser.add_subparsers(dest="command", help="Subcommands")
     
+    # Packmol subcommand
+    packmol_parser = subparsers.add_parser("packmol", help="Work with Packmol input files")
+    packmol_parser.add_argument("--input-file", required=True, help="Path to an existing Packmol input file")
+    packmol_parser.add_argument("--output-file", help="Path to write the generated Packmol input file")
+    packmol_parser.add_argument("--update-file", help="Path to a JSON file with updates to apply")
+    packmol_parser.add_argument("--execute", action="store_true", help="Execute Packmol after processing")
+    packmol_parser.add_argument("--print-json", action="store_true", help="Print configuration as JSON and exit")
+    
     # Grid subcommand
     grid_parser = subparsers.add_parser("grid", help="Generate a grid of replicated molecules")
     grid_parser.add_argument("--mdf", required=True, help="Input MDF file")
@@ -349,6 +357,80 @@ def main():
             logger.info(f"Logs available in workspace: {config.session_workspace.current_workspace}")
             return 1
     
+    elif args.command == "packmol":
+        logger.info("Executing Packmol command...")
+        
+        try:
+            # Import the Packmol tool
+            from moltools.external_tools import PackmolTool
+            
+            # Create a Packmol tool instance
+            packmol = PackmolTool()
+            
+            # Parse input file
+            logger.info(f"Parsing Packmol input file: {args.input_file}")
+            config_dict = packmol.parse_packmol_file(args.input_file)
+            
+            # Print JSON and exit if requested
+            if args.print_json:
+                print(json.dumps(config_dict, indent=2))
+                return 0
+            
+            # Load updates from file if provided
+            update_dict = None
+            if args.update_file:
+                if os.path.isfile(args.update_file):
+                    try:
+                        with open(args.update_file, 'r') as f:
+                            update_dict = json.load(f)
+                        logger.info(f"Loaded updates from file: {args.update_file}")
+                    except json.JSONDecodeError as e:
+                        logger.error(f"Failed to parse update file as JSON: {e}")
+                        return 1
+                else:
+                    logger.error(f"Update file not found: {args.update_file}")
+                    return 1
+            
+            # Execute Packmol if requested
+            if args.execute:
+                logger.info("Executing Packmol...")
+                result = packmol.execute(
+                    input_file=args.input_file,
+                    output_file=args.output_file,
+                    update_dict=update_dict
+                )
+                
+                # Check if execution was successful
+                if result['return_code'] == 0:
+                    logger.info("Packmol execution successful!")
+                    if result.get('output_file'):
+                        logger.info(f"Output file created: {result['output_file']}")
+                else:
+                    logger.error("Packmol execution failed.")
+                    return 1
+            # Otherwise, just update and generate a new input file
+            elif args.output_file:
+                logger.info(f"Generating Packmol input file: {args.output_file}")
+                
+                # Apply updates if provided
+                if update_dict:
+                    config_dict = packmol.update_dict(config_dict, update_dict)
+                    logger.info("Applied updates to configuration.")
+                
+                # Generate the new input file
+                packmol.generate_packmol_file(config_dict, args.output_file)
+                logger.info(f"Generated input file: {args.output_file}")
+            else:
+                logger.error("Either --output-file or --execute must be specified.")
+                return 1
+                
+        except Exception as e:
+            logger.error(f"Packmol operation failed: {str(e)}")
+            # Keep workspace on error
+            config.keep_session_workspace = True
+            logger.info(f"Logs available in workspace: {config.session_workspace.current_workspace}")
+            return 1
+            
     elif args.command == "convert-to-namd":
         logger.info("Executing NAMD conversion command...")
         

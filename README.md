@@ -87,6 +87,24 @@ Convert Material Studio files to NAMD format (PDB/PSF) using the MSI2NAMD extern
 python -m src.cli convert-to-namd --mdf input.mdf --car input.car --output-dir namd_output --residue-name MOL
 ```
 
+#### Packmol Integration
+
+Work with Packmol input files for molecular packing:
+
+```bash
+# Parse and print Packmol configuration as JSON
+python -m src.cli packmol --input-file system.inp --print-json
+
+# Generate a new input file with updates from a JSON file
+python -m src.cli packmol --input-file system.inp --update-file updates.json --output-file modified.inp
+
+# Execute Packmol with an input file
+python -m src.cli packmol --input-file system.inp --execute
+
+# Generate a new input file with updates and execute Packmol
+python -m src.cli packmol --input-file system.inp --update-file updates.json --output-file modified.inp --execute
+```
+
 Additional options:
 - `--parameter-file`: Specify a parameter file for conversion
 - `--charge-groups`: Include charge groups in conversion
@@ -145,6 +163,43 @@ from src.pipeline import MolecularPipeline
         charge_groups=False,
         cleanup_workspace=True
     ))
+```
+
+#### External Tools API
+
+The external tools API provides programmatic access to external tools like Packmol:
+
+```python
+from src.external_tools import PackmolTool
+
+# Initialize Packmol tool
+packmol = PackmolTool()
+
+# Parse existing Packmol input file
+config = packmol.parse_packmol_file("input.inp")
+
+# Update configuration
+config["global"]["tolerance"] = ["2.5"]  # Change tolerance
+config["structures"][0]["properties"]["number"] = ["50"]  # Change molecule count
+
+# Generate new input file
+packmol.generate_packmol_file(config, "updated.inp")
+
+# Execute Packmol
+result = packmol.execute(input_file="updated.inp")
+output_file = result.get("output_file")  # Get path to output file
+
+# Or use with configuration updates in one step
+updates = {
+    "global": {"tolerance": ["3.0"]},
+    "structures": [{"properties": {"number": ["100"]}}]
+}
+result = packmol.execute(
+    input_file="input.inp",
+    update_dict=updates,
+    output_file="modified.inp"
+)
+```
 ```
 
 For debugging intermediate steps:

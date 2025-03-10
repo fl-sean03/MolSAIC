@@ -25,3 +25,37 @@ This section contains detailed API documentation for MONET (MOlecular NEtwork To
 ### External Tools
 - [ExternalTool](external_tool.md) - Base class for external tool integration
 - [MSI2NAMD](msi2namd.md) - Interface for MSI2NAMD conversion tool
+- [Packmol](packmol.md) - Interface for Packmol molecular packing tool
+
+## Command Line Interface
+
+MONET provides a command-line interface for common operations. Use `moltools --help` to see all available commands.
+
+### Available Commands
+
+- `grid`: Generate a grid of replicated molecules
+- `update-ff`: Update force-field types based on a mapping
+- `update-charges`: Update atomic charges based on a mapping
+- `convert-to-namd`: Convert files to NAMD format using MSI2NAMD
+- `packmol`: Work with Packmol input files
+
+### Examples
+
+#### Grid Replication
+
+```bash
+moltools grid --mdf input.mdf --car input.car --grid 3 --output-mdf grid.mdf --output-car grid.car
+```
+
+#### Packmol Integration
+
+```bash
+# Parse and print Packmol configuration
+moltools packmol --input-file system.inp --print-json
+
+# Generate a new Packmol input file with updates
+moltools packmol --input-file system.inp --update-file updates.json --output-file modified.inp
+
+# Execute Packmol
+moltools packmol --input-file system.inp --execute
+```
