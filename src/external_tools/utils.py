@@ -283,8 +283,24 @@ def run_process(cmd: List[str], cwd: Optional[str] = None,
         # Try to terminate the process
         try:
             process.terminate()
-        except:
-            pass
+        except Exception as term_err:
+            logger.warning(f"Error terminating process: {str(term_err)}")
+        
+        # Collect any output that was captured before the timeout
+        timeout_stdout = ""
+        timeout_stderr = ""
+        
+        # Try to get any stdout/stderr that was collected before the timeout
+        if hasattr(e, 'stdout') and e.stdout:
+            timeout_stdout = e.stdout.decode('utf-8', errors='replace') if isinstance(e.stdout, bytes) else e.stdout
+        if hasattr(e, 'stderr') and e.stderr:
+            timeout_stderr = e.stderr.decode('utf-8', errors='replace') if isinstance(e.stderr, bytes) else e.stderr
+            
+        # Supplement with any output we captured in our poller if available
+        if 'stdout_chunks' in locals() and stdout_chunks:
+            timeout_stdout = "".join(stdout_chunks)
+        if 'stderr_chunks' in locals() and stderr_chunks:
+            timeout_stderr = "".join(stderr_chunks)
         
         logger.error(f"Process timed out after {timeout} seconds: {' '.join(cmd)}")
         
@@ -294,10 +310,16 @@ def run_process(cmd: List[str], cwd: Optional[str] = None,
                 with open(os.path.join(cwd, "process_error.log"), 'w') as f:
                     f.write(f"ERROR: Process timed out after {timeout} seconds\n")
                     f.write(f"Command: {' '.join(cmd)}\n")
+                    f.write(f"Partial STDOUT: {timeout_stdout[:1000]}...\n" if len(timeout_stdout) > 1000 
+                           else f"Partial STDOUT: {timeout_stdout}\n" if timeout_stdout else "No STDOUT captured\n")
+                    f.write(f"Partial STDERR: {timeout_stderr[:1000]}...\n" if len(timeout_stderr) > 1000 
+                           else f"Partial STDERR: {timeout_stderr}\n" if timeout_stderr else "No STDERR captured\n")
             except Exception as log_err:
                 logger.warning(f"Failed to save error log: {str(log_err)}")
         
-        raise
+        # Return what we have instead of raising the exception
+        timeout_message = f"Process timed out after {timeout} seconds"
+        return (1, timeout_stdout, timeout_message)
         
     except subprocess.SubprocessError as e:
         logger.error(f"Failed to run process: {str(e)}")

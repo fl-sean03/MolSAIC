@@ -141,20 +141,72 @@ class PackmolTool(BaseExternalTool):
         
         # Find all structure files referenced in the configuration and copy them to the workspace
         structure_files = []
+        input_file_dir = os.path.dirname(input_info.get('input_file', '')) if 'input_file' in input_info else None
+        current_dir = os.getcwd()
+        missing_files = []
+        
+        # Create a list of directories to search for structure files
+        search_dirs = [current_dir]
+        
+        # Add the input file directory if it's different from current dir
+        if input_file_dir and os.path.abspath(input_file_dir) != os.path.abspath(current_dir):
+            search_dirs.append(input_file_dir)
+            
+        logger.info(f"Will search for structure files in: {', '.join(search_dirs)}")
+        
         for struct in input_info['config'].get('structures', []):
             structure_file = struct.get('structure_file')
-            if structure_file and os.path.isfile(structure_file):
+            if not structure_file:
+                continue
+                
+            # First try the file as specified (absolute path or relative to current dir)
+            search_locations = [structure_file]
+            
+            # Then try the basename in each search directory
+            basename = os.path.basename(structure_file)
+            for directory in search_dirs:
+                search_locations.append(os.path.join(directory, basename))
+            
+            # Try all search locations
+            found_file = None
+            for location in search_locations:
+                if os.path.isfile(location):
+                    found_file = location
+                    break
+            
+            if found_file:
                 # Copy the structure file to the workspace
-                workspace_structure_file = os.path.join(workspace_path, os.path.basename(structure_file))
-                logger.info(f"Copying structure file to workspace: {workspace_structure_file}")
-                with open(structure_file, 'rb') as src, open(workspace_structure_file, 'wb') as dst:
+                workspace_structure_file = os.path.join(workspace_path, os.path.basename(found_file))
+                logger.info(f"Copying structure file to workspace: {workspace_structure_file} (from {found_file})")
+                with open(found_file, 'rb') as src, open(workspace_structure_file, 'wb') as dst:
                     dst.write(src.read())
                 structure_files.append(workspace_structure_file)
                 
-                # Update the structure file path in the configuration
-                struct['structure_file'] = os.path.basename(structure_file)
+                # Update the structure file path in the configuration to use just the basename
+                struct['structure_file'] = os.path.basename(found_file)
+            else:
+                missing_files.append(structure_file)
+                logger.warning(f"Structure file not found: {structure_file}")
+                logger.warning(f"Searched in: {', '.join(search_locations)}")
         
+        if missing_files:
+            logger.error(f"Missing structure files: {', '.join(missing_files)}")
+            logger.error("Packmol will likely fail due to missing structure files.")
+            
+            # List all PDB files found in the current directory to help the user
+            if os.path.exists(current_dir):
+                pdbs = [f for f in os.listdir(current_dir) if f.lower().endswith('.pdb')]
+                if pdbs:
+                    logger.info(f"Available PDB files in current directory: {', '.join(pdbs)}")
+            
+            # If input file dir is different, list all PDB files there too
+            if input_file_dir and os.path.exists(input_file_dir) and os.path.abspath(input_file_dir) != os.path.abspath(current_dir):
+                pdbs = [f for f in os.listdir(input_file_dir) if f.lower().endswith('.pdb')]
+                if pdbs:
+                    logger.info(f"Available PDB files in input file directory: {', '.join(pdbs)}")
+            
         input_info['structure_files'] = structure_files
+        input_info['missing_structure_files'] = missing_files
         return input_info
     
     def build_command(self, input_info: Dict[str, Any], **kwargs) -> List[str]:
@@ -167,7 +219,23 @@ class PackmolTool(BaseExternalTool):
             
         Returns:
             list: Command list to be executed.
+            
+        Raises:
+            ValueError: If required structure files are missing.
         """
+        # Check for missing structure files early - fail fast
+        if input_info.get('missing_structure_files'):
+            missing_files = input_info['missing_structure_files']
+            error_msg = f"Cannot run Packmol: Missing structure files: {', '.join(missing_files)}"
+            logger.error(error_msg)
+            
+            # Provide more helpful messages
+            for missing_file in missing_files:
+                logger.error(f"Could not find file: {missing_file}")
+                logger.error("Please check that the file exists in the current directory or specify the full path.")
+                
+            raise ValueError(error_msg)
+            
         # Determine which input file to use
         if 'output_file' in input_info:
             # If an output file was generated, use it
@@ -217,35 +285,56 @@ class PackmolTool(BaseExternalTool):
         Raises:
             RuntimeError: If the tool execution failed.
         """
-        # Check if the execution was successful
-        if return_code != 0:
-            error_msg = f"Packmol failed with return code {return_code}. "
-            
-            if stdout.strip():
-                logger.error(f"Packmol stdout: {stdout.strip()}")
-            if stderr.strip():
-                logger.error(f"Packmol stderr: {stderr.strip()}")
-                
-            raise RuntimeError(error_msg)
-        
         # Get the workspace path
         workspace_path = input_info['workspace_path']
         
+        # Check if we have a timeout
+        is_timeout = False
+        if return_code != 0:
+            if "TimeoutExpired" in stderr or "timed out" in stderr.lower():
+                is_timeout = True
+                logger.warning(f"Packmol execution timed out after {kwargs.get('timeout', 'unknown')} seconds")
+                logger.warning("Checking for partial results...")
+            else:
+                error_msg = f"Packmol failed with return code {return_code}. "
+                
+                if stdout.strip():
+                    logger.error(f"Packmol stdout: {stdout.strip()}")
+                if stderr.strip():
+                    logger.error(f"Packmol stderr: {stderr.strip()}")
+                    
+                if not kwargs.get('continue_on_error', False):
+                    raise RuntimeError(error_msg)
+        
         # Find the output file (referenced in the config or stdout)
         output_file = None
-        for line in stdout.splitlines():
-            if "Output file:" in line:
-                output_file = line.split(":", 1)[1].strip()
-                # If the output file doesn't have an absolute path, assume it's in the workspace
-                if not os.path.isabs(output_file):
-                    output_file = os.path.join(workspace_path, output_file)
+        
+        # First check if the output file exists already in the workspace
+        # This is especially useful for timeouts where the file might be partially written
+        expected_output = None
+        for key, tokens in input_info['config'].get('global', {}).items():
+            if key.lower() == 'output':
+                expected_output = ' '.join(tokens)
                 break
         
-        # If no output file was found in stdout, check the configuration
+        if expected_output:
+            # Check both relative to workspace and absolute paths
+            possible_paths = [
+                os.path.join(workspace_path, expected_output),
+                expected_output if os.path.isabs(expected_output) else None
+            ]
+            
+            for path in possible_paths:
+                if path and os.path.isfile(path):
+                    output_file = path
+                    logger.info(f"Found output file: {output_file}")
+                    break
+        
+        # If not found as a file, look in stdout
         if not output_file:
-            for key, tokens in input_info['config'].get('global', {}).items():
-                if key.lower() == 'output':
-                    output_file = ' '.join(tokens)
+            for line in stdout.splitlines():
+                if "Output file:" in line:
+                    output_file = line.split(":", 1)[1].strip()
                     # If the output file doesn't have an absolute path, assume it's in the workspace
                     if not os.path.isabs(output_file):
                         output_file = os.path.join(workspace_path, output_file)
@@ -256,6 +345,16 @@ class PackmolTool(BaseExternalTool):
         if output_file and os.path.isfile(output_file):
             output_files.append(output_file)
             self.workspace_manager.track_files(output_files)
+            
+            # Check file size to determine if it's a valid result
+            file_size = os.path.getsize(output_file)
+            if file_size > 0:
+                if is_timeout:
+                    logger.info(f"Found partial output file ({file_size} bytes): {output_file}")
+            else:
+                logger.warning(f"Output file exists but is empty (0 bytes): {output_file}")
+                if not is_timeout and not kwargs.get('continue_on_error', False):
+                    output_files = []
         
         # Create result dictionary
         result = {
@@ -264,11 +363,17 @@ class PackmolTool(BaseExternalTool):
             'stderr': stderr,
             'output_files': output_files,
             'output_file': output_file,
-            'config': input_info['config']
+            'config': input_info['config'],
+            'timed_out': is_timeout
         }
         
-        # Log success
-        logger.info(f"Packmol completed successfully. Generated {len(output_files)} output files.")
+        # Log success or partial success
+        if return_code == 0:
+            logger.info(f"Packmol completed successfully. Generated {len(output_files)} output files.")
+        elif is_timeout and output_files:
+            logger.info(f"Packmol timed out but generated {len(output_files)} partial output files.")
+        elif kwargs.get('continue_on_error', False):
+            logger.warning(f"Packmol failed but continuing as requested. Found {len(output_files)} output files.")
         
         return result
     

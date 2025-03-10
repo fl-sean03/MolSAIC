@@ -16,6 +16,38 @@ from molsaic.pipeline import MolecularPipeline
 
 logger = logging.getLogger(__name__)
 
+def copy_output_file(source_file: str, output_dir: str, suffix: str = None) -> str:
+    """
+    Copy a file to the output directory with an optional suffix.
+    
+    Args:
+        source_file (str): Path to the source file
+        output_dir (str): Path to the output directory
+        suffix (str, optional): Suffix to add to the filename (e.g., '_partial')
+        
+    Returns:
+        str: Path to the copied file, or None if copy failed
+    """
+    try:
+        import shutil
+        basename = os.path.basename(source_file)
+        
+        # Add suffix if provided
+        if suffix:
+            name_parts = os.path.splitext(basename)
+            dest_file = f"{name_parts[0]}{suffix}{name_parts[1]}"
+        else:
+            dest_file = basename
+            
+        dest_path = os.path.join(output_dir, dest_file)
+        
+        # Copy the file
+        shutil.copy2(source_file, dest_path)
+        return dest_path
+    except Exception as copy_err:
+        logger.warning(f"Could not copy output file: {str(copy_err)}")
+        return None
+
 def main():
     """
     Main entry point for the CLI.
@@ -59,6 +91,14 @@ def main():
     packmol_parser.add_argument("--update-file", help="Path to a JSON file with updates to apply")
     packmol_parser.add_argument("--execute", action="store_true", help="Execute Packmol after processing")
     packmol_parser.add_argument("--print-json", action="store_true", help="Print configuration as JSON and exit")
+    packmol_parser.add_argument("--output-dir", default="packmol_output", 
+                              help="Directory to store the output files (default: packmol_output)")
+    packmol_parser.add_argument("--timeout", type=int, default=900, 
+                              help="Timeout in seconds for Packmol execution (default: 900 seconds)")
+    packmol_parser.add_argument("--continue-on-timeout", action="store_true",
+                              help="Continue execution if timeout occurs and use partial results if available")
+    packmol_parser.add_argument("--continue-on-error", action="store_true",
+                              help="Continue execution even if Packmol fails (will use partial or empty results)")
     
     # Grid subcommand
     grid_parser = subparsers.add_parser("grid", help="Generate a grid of replicated molecules")
@@ -394,17 +434,79 @@ def main():
             # Execute Packmol if requested
             if args.execute:
                 logger.info("Executing Packmol...")
+                # Get base output directory name and handle enumeration if it exists
+                base_output_dir = getattr(args, 'output_dir', 'packmol_output')
+                if not os.path.isabs(base_output_dir):
+                    base_output_dir = os.path.abspath(base_output_dir)
+                
+                # If the directory exists, enumerate it (packmol_output_1, packmol_output_2, etc.)
+                output_dir = base_output_dir
+                counter = 1
+                while os.path.exists(output_dir):
+                    output_dir = f"{base_output_dir}_{counter}"
+                    counter += 1
+                
+                try:
+                    os.makedirs(output_dir, exist_ok=True)
+                    logger.info(f"Using output directory: {output_dir}")
+                except Exception as e:
+                    logger.error(f"Failed to create output directory '{output_dir}': {str(e)}")
+                    logger.error("Please check directory permissions or provide a different output directory")
+                    return 1
+                
+                # Add all the parameters and flags
                 result = packmol.execute(
                     input_file=args.input_file,
                     output_file=args.output_file,
-                    update_dict=update_dict
+                    update_dict=update_dict,
+                    timeout=getattr(args, 'timeout', 900),  # Default to 900 seconds if not provided
+                    continue_on_error=getattr(args, 'continue_on_error', False),
+                    continue_on_timeout=getattr(args, 'continue_on_timeout', False)
                 )
                 
+                # Check if execution timed out
+                if result.get('timed_out', False):
+                    logger.warning(f"Packmol timed out after {args.timeout} seconds")
+                    
+                    # Check if we have partial results
+                    if result.get('output_files') and args.continue_on_timeout:
+                        logger.info("Using partial results and continuing execution")
+                        for output_file in result.get('output_files', []):
+                            file_size = os.path.getsize(output_file)
+                            logger.info(f"Partial output file: {output_file} ({file_size} bytes)")
+                            
+                            # Copy the partial output file to the output directory
+                            copied_path = copy_output_file(output_file, output_dir, suffix="_partial")
+                            if copied_path:
+                                logger.info(f"Copied partial output to: {copied_path}")
+                    elif not args.continue_on_timeout:
+                        logger.error("Timeout occurred and --continue-on-timeout not specified")
+                        return 1
+                    else:
+                        logger.error("Timeout occurred and no partial results available")
+                        return 1
                 # Check if execution was successful
-                if result['return_code'] == 0:
+                elif result['return_code'] == 0:
                     logger.info("Packmol execution successful!")
                     if result.get('output_file'):
                         logger.info(f"Output file created: {result['output_file']}")
+                        
+                        # Copy the successful output file to the output directory
+                        output_file = result['output_file']
+                        copied_path = copy_output_file(output_file, output_dir)
+                        if copied_path:
+                            logger.info(f"Copied output to: {copied_path}")
+                # Otherwise, it failed but we're continuing
+                elif args.continue_on_error:
+                    logger.warning("Packmol execution failed but continuing as requested")
+                    if result.get('output_files'):
+                        for output_file in result.get('output_files', []):
+                            logger.info(f"Using output file despite error: {output_file}")
+                            
+                            # Copy the output file to the output directory
+                            copied_path = copy_output_file(output_file, output_dir, suffix="_error")
+                            if copied_path:
+                                logger.info(f"Copied error output to: {copied_path}")
                 else:
                     logger.error("Packmol execution failed.")
                     return 1
@@ -439,17 +541,22 @@ def main():
             logger.error("NAMD conversion is only available in object-based mode")
             return 1
         
-        # Handle output directory
-        output_dir = args.output_dir
+        # Get base output directory name and handle enumeration if it exists
+        base_output_dir = args.output_dir
+        if not os.path.isabs(base_output_dir):
+            base_output_dir = os.path.abspath(base_output_dir)
         
-        # Convert to absolute path if relative
-        if not os.path.isabs(output_dir):
-            output_dir = os.path.abspath(output_dir)
+        # If the directory exists, enumerate it (namd_output_1, namd_output_2, etc.)
+        output_dir = base_output_dir
+        counter = 1
+        while os.path.exists(output_dir):
+            output_dir = f"{base_output_dir}_{counter}"
+            counter += 1
         
         try:
             # Create the directory and any needed parent directories
             os.makedirs(output_dir, exist_ok=True)
-            logger.debug(f"Created output directory: {output_dir}")
+            logger.info(f"Using output directory: {output_dir}")
         except Exception as e:
             logger.error(f"Failed to create output directory '{output_dir}': {str(e)}")
             logger.error("Please check directory permissions or provide a different output directory")
@@ -457,7 +564,7 @@ def main():
         
         # Update the argument with the absolute path
         args.output_dir = output_dir
-        logger.debug(f"Using output directory: {output_dir}")
+        logger.debug(f"Using NAMD output directory: {output_dir}")
         
         try:
             # Session workspace is already set up by the global flag processing
@@ -526,7 +633,31 @@ def cleanup_session():
             logger.debug(f"Cleaning up session workspace: {config.session_workspace.current_workspace}")
             config.session_workspace.close(cleanup=True)
 
+def signal_handler(sig, frame):
+    """Handle interrupt signals to ensure proper cleanup."""
+    logger.warning(f"Received interrupt signal ({sig}), cleaning up...")
+    
+    # Set global flag to indicate that we want to keep the workspace on interrupt
+    import molsaic.config as cfg
+    
+    # Force keep the session workspace when interrupted with Ctrl+C
+    if hasattr(cfg, 'keep_session_workspace'):
+        old_value = cfg.keep_session_workspace
+        cfg.keep_session_workspace = True
+        logger.info(f"Preserving workspace on interrupt (was {old_value})")
+    
+    # Run cleanup with the updated flag values
+    cleanup_session()
+    
+    # Exit with error code
+    sys.exit(130)  # 130 is the standard exit code for SIGINT
+
 if __name__ == "__main__":
+    # Register signal handlers for proper cleanup on interrupt
+    import signal
+    signal.signal(signal.SIGINT, signal_handler)  # Handle Ctrl+C
+    signal.signal(signal.SIGTERM, signal_handler)  # Handle termination
+    
     try:
         exit_code = main()
     finally:

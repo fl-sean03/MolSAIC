@@ -194,7 +194,21 @@ class BaseExternalTool(abc.ABC):
         """
         # Extract common options
         timeout = kwargs.pop('timeout', self.default_timeout)
-        cleanup = kwargs.pop('cleanup', True)
+        
+        # Check global keep flag if it exists
+        global_keep = False
+        try:
+            # This import needs to be local to avoid circular imports
+            from molsaic import config as main_config
+            if hasattr(main_config, 'keep_all_workspaces') and main_config.keep_all_workspaces:
+                global_keep = True
+                logger.info("Global --keep flag is set, workspace will be preserved")
+        except (ImportError, AttributeError):
+            # Continue with default behavior if import fails or attribute doesn't exist
+            pass
+            
+        # Override cleanup if global flag is set
+        cleanup = False if global_keep else kwargs.pop('cleanup', True)
         keep_patterns = kwargs.pop('keep_patterns', None)
         output_dir = kwargs.pop('output_dir', None)
         
@@ -230,16 +244,64 @@ class BaseExternalTool(abc.ABC):
             files_in_workspace = os.listdir(workspace_path)
             logger.info(f"Files in workspace: {', '.join(files_in_workspace)}")
             
-            # Execute the command
-            # Check if the command includes stdin file information
-            stdin_file = input_info.get('stdin_file', None)
-            return_code, stdout, stderr = run_process(
-                cmd=cmd,
-                cwd=workspace_path,
-                timeout=timeout,
-                capture_output=True,
-                stdin_file=stdin_file
-            )
+            # Set up signal handlers to intercept interrupts during command execution
+            # This ensures we can properly handle Ctrl+C and preserve the workspace if needed
+            original_sigint_handler = None
+            original_sigterm_handler = None
+            
+            def local_signal_handler(sig, frame):
+                """Handle interrupt signals during command execution."""
+                logger.warning(f"Received interrupt signal ({sig}) during command execution")
+                
+                # Mark that we want to keep the workspace when interrupted
+                nonlocal cleanup
+                cleanup = False
+                
+                try:
+                    # Try to import the config module to update global flags
+                    from molsaic import config as main_config
+                    if hasattr(main_config, 'keep_session_workspace'):
+                        main_config.keep_session_workspace = True
+                        logger.info("Preserving workspace due to interrupt")
+                except (ImportError, AttributeError):
+                    # Continue if import fails
+                    pass
+                    
+                # Restore original handlers
+                import signal
+                if original_sigint_handler:
+                    signal.signal(signal.SIGINT, original_sigint_handler)
+                if original_sigterm_handler:
+                    signal.signal(signal.SIGTERM, original_sigterm_handler)
+                    
+                # Re-raise the signal to be handled by the original handler
+                os.kill(os.getpid(), sig)
+                
+            try:
+                # Install our signal handlers to intercept interrupts
+                import signal
+                original_sigint_handler = signal.getsignal(signal.SIGINT)
+                original_sigterm_handler = signal.getsignal(signal.SIGTERM)
+                signal.signal(signal.SIGINT, local_signal_handler)
+                signal.signal(signal.SIGTERM, local_signal_handler)
+                
+                # Execute the command
+                # Check if the command includes stdin file information
+                stdin_file = input_info.get('stdin_file', None)
+                return_code, stdout, stderr = run_process(
+                    cmd=cmd,
+                    cwd=workspace_path,
+                    timeout=timeout,
+                    capture_output=True,
+                    stdin_file=stdin_file
+                )
+            finally:
+                # Restore original signal handlers
+                import signal
+                if original_sigint_handler:
+                    signal.signal(signal.SIGINT, original_sigint_handler)
+                if original_sigterm_handler:
+                    signal.signal(signal.SIGTERM, original_sigterm_handler)
             
             # Log files are now automatically created by run_process
             logger.info(f"Process execution completed with return code {return_code}")
@@ -278,6 +340,16 @@ class BaseExternalTool(abc.ABC):
                 import shutil
                 import glob
                 
+                # Double-check global keep flag before cleanup (in case it changed during execution)
+                try:
+                    from molsaic import config as main_config
+                    if hasattr(main_config, 'keep_all_workspaces') and main_config.keep_all_workspaces:
+                        logger.info(f"Skipping cleanup due to global --keep flag: {workspace_path}")
+                        return result
+                except (ImportError, AttributeError):
+                    # Continue with cleanup if import fails
+                    pass
+                
                 # If keep_patterns is specified, only delete files that don't match patterns
                 if keep_patterns:
                     for root, _, files in os.walk(workspace_path):
@@ -294,10 +366,27 @@ class BaseExternalTool(abc.ABC):
                 else:
                     # Otherwise remove the entire directory
                     try:
-                        shutil.rmtree(workspace_path)
-                        logger.debug(f"Cleaned up tool directory: {workspace_path}")
-                    except:
-                        logger.debug(f"Failed to clean up tool directory: {workspace_path}")
+                        # Keep files if they match certain patterns that are useful for debugging
+                        debug_patterns = ['*.log', '*.inp', '*.pdb', '*.out']
+                        if any(glob.glob(os.path.join(workspace_path, pattern)) for pattern in debug_patterns):
+                            logger.debug(f"Preserving log and input files in: {workspace_path}")
+                            # Just delete non-essential files
+                            for root, _, files in os.walk(workspace_path):
+                                for file in files:
+                                    file_path = os.path.join(root, file)
+                                    should_keep = any(glob.fnmatch.fnmatch(os.path.basename(file_path), pattern) 
+                                                   for pattern in debug_patterns)
+                                    if not should_keep:
+                                        try:
+                                            os.unlink(file_path)
+                                        except:
+                                            pass
+                        else:
+                            # Remove the entire directory if no debug files
+                            shutil.rmtree(workspace_path)
+                            logger.debug(f"Cleaned up tool directory: {workspace_path}")
+                    except Exception as e:
+                        logger.debug(f"Failed to clean up tool directory: {workspace_path}, Error: {str(e)}")
     
     def __enter__(self) -> 'BaseExternalTool':
         """
