@@ -1,4 +1,4 @@
-# MONET (MOlecular NEtwork Toolkit)
+# MONET (Molecular Network Toolkit)
 
 MONET is a comprehensive molecular toolkit for processing molecular data files (MDF, CAR, PDB) that supports tasks such as grid replication, force-field updates, and charge corrections.
 
