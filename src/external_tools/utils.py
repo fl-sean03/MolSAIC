@@ -63,7 +63,7 @@ def find_executable(name: str) -> Optional[str]:
     
     return None
 
-def create_temp_file(prefix: str = 'moltools_', suffix: str = '.tmp', 
+def create_temp_file(prefix: str = 'molsaic_', suffix: str = '.tmp', 
                      directory: Optional[str] = None, content: Optional[str] = None) -> str:
     """
     Create a temporary file with optional content.

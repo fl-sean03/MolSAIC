@@ -1,5 +1,5 @@
 """
-Workspace management for MolTools.
+Workspace management for MolSAIC.
 
 This module provides the WorkspaceManager class for creating and managing
 temporary directories for tool execution and file processing.
@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 class WorkspaceManager:
     """
-    Manages temporary workspace directories for MolTools operations.
+    Manages temporary workspace directories for MolSAIC operations.
     
     This class provides functionality for creating, tracking, and cleaning up
     temporary directories. It supports retention policies and file tracking.
@@ -35,14 +35,14 @@ class WorkspaceManager:
     
     def __init__(self, base_path: Optional[str] = None, 
                  retention_hours: Optional[int] = None,
-                 prefix: str = "moltools_"):
+                 prefix: str = "molsaic_"):
         """
         Initialize a WorkspaceManager.
         
         Args:
             base_path (str, optional): Base directory for workspaces. Default uses config.
             retention_hours (int, optional): Retention policy in hours. Default uses config.
-            prefix (str, optional): Prefix for workspace directories. Default is "moltools_".
+            prefix (str, optional): Prefix for workspace directories. Default is "molsaic_".
         """
         self.base_path = base_path or config.DEFAULT_WORKSPACE_PATH
         self.retention_hours = retention_hours if retention_hours is not None else config.WORKSPACE_RETENTION
@@ -57,7 +57,7 @@ class WorkspaceManager:
                 logger.debug(f"Created workspace base directory: {self.base_path}")
             except OSError as e:
                 # Always use current directory - never fall back to temp
-                self.base_path = os.path.join(".", ".moltools_workspace")
+                self.base_path = os.path.join(".", ".molsaic_workspace")
                 try:
                     os.makedirs(self.base_path, exist_ok=True)
                     logger.warning(f"Created workspace in current directory: {self.base_path}")
@@ -116,7 +116,7 @@ class WorkspaceManager:
             workspace_path (str): Path to the workspace directory
         """
         # Create log file path
-        log_file = os.path.join(workspace_path, "moltools.log")
+        log_file = os.path.join(workspace_path, "molsaic.log")
         
         # First, flush all memory-captured logs to our file
         try:

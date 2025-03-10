@@ -1,8 +1,8 @@
 #\!/usr/bin/env python3
 """
-Basic usage tutorial for moltools package.
+Basic usage tutorial for MolSAIC package.
 
-This tutorial demonstrates the basic usage of the moltools package.
+This tutorial demonstrates the basic usage of the MolSAIC package.
 """
 
 from src.models.system import MolecularSystem

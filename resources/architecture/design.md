@@ -2,12 +2,12 @@ Below is a comprehensive design document that you can share with your developmen
 
 ---
 
-# MolTools: Molecular Data Processing Tools
+# MolSAIC: Molecular Data Processing Tools
 
 ## 1. Introduction
 
 ### 1.1 Purpose
-The MolTools package is designed to provide a robust, modular, and extensible suite of tools for processing molecular data files. The package will support tasks such as:
+The MolSAIC package is designed to provide a robust, modular, and extensible suite of tools for processing molecular data files. The package will support tasks such as:
 - Parsing and writing MDF (Materials Studio Molecular Data Format) files
 - Parsing and writing CAR (Materials Studio Coordinate Archive) files
 - Grid replication of molecules
@@ -49,7 +49,7 @@ Researchers often work with multiple file formats (MDF, CAR, PDB) that describe 
 ## 3. Architecture Overview
 
 ### 3.1 High-Level Architecture
-The MolTools package is organized into distinct modules, each responsible for one aspect of the ETL (Extract, Transform, Load) workflow:
+The MolSAIC package is organized into distinct modules, each responsible for one aspect of the ETL (Extract, Transform, Load) workflow:
 - **Parsers:** Extract data from input files (MDF, CAR, PDB).
 - **Models:** Represent molecular entities using object-oriented classes (Atom, Molecule, System).
 - **Transformers:** Perform various data transformations (e.g., grid replication, updating force-field types/charges).
@@ -58,7 +58,7 @@ The MolTools package is organized into distinct modules, each responsible for on
 
 ### 3.2 Package Directory Structure
 ```
-moltools/
+molsaic/
 ├── __init__.py
 ├── cli.py              # Main command-line interface entry point
 ├── config.py           # Configuration defaults and logging setup
@@ -204,17 +204,17 @@ moltools/
 
 - **Grid Replication Example:**
   ```bash
-  python -m moltools.cli grid --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output_mdf grid_box.mdf --output_car grid_box.car
+  python -m molsaic.cli grid --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output_mdf grid_box.mdf --output_car grid_box.car
   ```
 
 - **Force-Field Update Example:**
   ```bash
-  python -m moltools.cli update-ff --car input.car --output updated.car --mapping mapping.json
+  python -m molsaic.cli update-ff --car input.car --output updated.car --mapping mapping.json
   ```
 
 - **Charge Update Example:**
   ```bash
-  python -m moltools.cli update-charges --mdf input.mdf --output updated.mdf --mapping charge_mapping.json
+  python -m molsaic.cli update-charges --mdf input.mdf --output updated.mdf --mapping charge_mapping.json
   ```
 
 Each subcommand should provide help text (using argparse’s built-in help) explaining the required arguments and options.
@@ -301,4 +301,4 @@ Developers should use this document as a blueprint for implementation and furthe
 
 ---
 
-This document, along with the sample code snippets and directory structure, should provide your development team with all the necessary information to start building and integrating the MolTools package.
+This document, along with the sample code snippets and directory structure, should provide your development team with all the necessary information to start building and integrating the MolSAIC package.

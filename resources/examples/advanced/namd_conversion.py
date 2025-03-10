@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Example of NAMD conversion with MolTools.
+Example of NAMD conversion with MolSAIC.
 
 This example demonstrates how to use the convert_to_namd method to
 convert molecular files to NAMD format using the external tools integration
@@ -12,9 +12,9 @@ import sys
 import logging
 from pathlib import Path
 
-# Add parent directory to path to be able to import moltools
+# Add parent directory to path to be able to import molsaic
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-from moltools.pipeline import MolecularPipeline
+from molsaic.pipeline import MolecularPipeline
 
 # Set up logging
 logging.basicConfig(level=logging.INFO,

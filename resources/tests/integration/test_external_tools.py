@@ -16,8 +16,8 @@ from unittest import mock
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from moltools.pipeline import MolecularPipeline
-from moltools.external_tools.msi2namd import MSI2NAMDTool
+from molsaic.pipeline import MolecularPipeline
+from molsaic.external_tools.msi2namd import MSI2NAMDTool
 
 class TestMSI2NAMDIntegration(unittest.TestCase):
     """Integration tests for MSI2NAMD tool."""

@@ -11,9 +11,9 @@ import logging
 import os
 from typing import Dict, Any, Optional
 
-from moltools.cli.base import BaseCommand
-from moltools import config
-from moltools.external_tools import PackmolTool
+from molsaic.cli.base import BaseCommand
+from molsaic import config
+from molsaic.external_tools import PackmolTool
 
 class PackmolCommand(BaseCommand):
     """
@@ -132,7 +132,7 @@ class PackmolCommand(BaseCommand):
 def main():
     """Entry point for directly running the Packmol command."""
     import argparse
-    from moltools import config
+    from molsaic import config
     
     # Set up logging
     config.setup_logging()

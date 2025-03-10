@@ -1,6 +1,6 @@
-# MONET (Molecular Network Toolkit)
+# MolSAIC (Molecular Structure Analysis and Integration Console)
 
-MONET is a comprehensive molecular toolkit for processing molecular data files (MDF, CAR, PDB) that supports tasks such as grid replication, force-field updates, and charge corrections.
+MolSAIC is a comprehensive molecular toolkit for processing molecular data files (MDF, CAR, PDB) that supports tasks such as grid replication, force-field updates, and charge corrections.
 
 ## Features
 
@@ -20,10 +20,10 @@ MONET is a comprehensive molecular toolkit for processing molecular data files (
 
 ```bash
 # Clone the repository
-git clone https://github.com/molsim-lab/monet.git
+git clone https://github.com/molsim-lab/molsaic.git
 
 # Navigate to the directory
-cd monet
+cd molsaic
 
 # Install the package
 pip install -e .
@@ -33,7 +33,7 @@ pip install -e .
 
 ### Command Line Interface
 
-MONET provides a CLI with several subcommands:
+MolSAIC provides a CLI with several subcommands:
 
 #### Grid Replication
 
@@ -112,7 +112,7 @@ Additional options:
 
 #### Processing Modes
 
-MONET uses the object-based pipeline architecture by default. This approach has several advantages:
+MolSAIC uses the object-based pipeline architecture by default. This approach has several advantages:
 - No intermediate files required for chained operations
 - Better memory efficiency
 - Debug mode for intermediate outputs
@@ -254,7 +254,7 @@ pipeline.load("in.car", "in.mdf").generate_grid().save("out.car", "out.mdf")
 
 ## File Format Support
 
-MONET supports the following file formats:
+MolSAIC supports the following file formats:
 
 - **MDF** (Materials Studio Molecular Data Format): Contains force-field information and connectivity data
 - **CAR** (Materials Studio Coordinate Archive): Contains atomic coordinates and molecule structure
@@ -263,7 +263,7 @@ MONET supports the following file formats:
 ## Repository Structure
 
 ```
-monet/
+molsaic/
 ├── resources/                   # Resources, testing and examples
 │   ├── architecture/            # Architecture documentation
 │   ├── benchmarks/              # Performance benchmarking scripts
@@ -309,8 +309,8 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for det
 
 1. Clone the repository
 ```bash
-git clone https://github.com/molsim-lab/monet.git
-cd monet
+git clone https://github.com/molsim-lab/molsaic.git
+cd molsaic
 ```
 
 2. Install in development mode
@@ -331,4 +331,4 @@ chmod +x .git/hooks/pre-commit
 
 ## Acknowledgments
 
-- This package was developed to support research in computational chemistry and materials science.# MONET
+- This package was developed to support research in computational chemistry and materials science.

@@ -10,7 +10,7 @@ This example shows:
 
 Requirements:
 - Packmol executable must be installed and available in PATH or 
-  configured via environment variable MOLTOOLS_PACKMOL_PATH
+  configured via environment variable MOLSAIC_PACKMOL_PATH
 """
 
 import os
@@ -19,10 +19,10 @@ import json
 import logging
 from pathlib import Path
 
-# Add the parent directory to the Python path so we can import moltools
+# Add the parent directory to the Python path so we can import molsaic
 sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 
-from moltools.external_tools import PackmolTool
+from molsaic.external_tools import PackmolTool
 
 def main():
     # Setup logging

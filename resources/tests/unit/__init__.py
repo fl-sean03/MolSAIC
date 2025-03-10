@@ -1,3 +1,3 @@
 """
-Unit tests for MolTools package.
+Unit tests for MolSAIC package.
 """

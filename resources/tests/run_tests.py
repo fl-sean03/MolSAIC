@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Script to run all MolTools tests.
+Script to run all MolSAIC tests.
 """
 
 import unittest

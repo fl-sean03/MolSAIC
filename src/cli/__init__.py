@@ -1,5 +1,5 @@
 """
-Command-line interface for MolTools.
+Command-line interface for MolSAIC.
 
 This module provides the main entry point for the command-line interface,
 which dispatches to the appropriate command handler based on the subcommand.
@@ -10,10 +10,10 @@ import logging
 import sys
 from typing import Dict, List, Type, Optional
 
-from moltools import config
-from moltools.cli.base import BaseCommand
-from moltools.cli.commands import get_commands
-from moltools.cli.utils.workspace import setup_workspace, cleanup_session
+from molsaic import config
+from molsaic.cli.base import BaseCommand
+from molsaic.cli.commands import get_commands
+from molsaic.cli.utils.workspace import setup_workspace, cleanup_session
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +25,7 @@ def create_parser() -> argparse.ArgumentParser:
         argparse.ArgumentParser: The configured argument parser
     """
     parser = argparse.ArgumentParser(
-        description="MolTools - Molecular Data Processing Tools",
+        description="MolSAIC - Molecular Data Processing Tools",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     

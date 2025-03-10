@@ -1,8 +1,8 @@
 """
-External tools integration framework for MolTools.
+External tools integration framework for MolSAIC.
 
 This module provides base classes and interfaces for integrating external
-executable tools with the MolTools object-based workflow.
+executable tools with the MolSAIC object-based workflow.
 """
 
 from .base import BaseExternalTool

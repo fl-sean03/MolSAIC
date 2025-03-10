@@ -16,13 +16,13 @@ logging.basicConfig(level=logging.INFO,
 logger = logging.getLogger(__name__)
 
 # Import both approaches
-from moltools.transformers.update_ff import update_ff_types
-from moltools.transformers.update_charges import update_charges
-from moltools.transformers.grid import generate_grid_files
-from moltools.pipeline import MolecularPipeline
+from molsaic.transformers.update_ff import update_ff_types
+from molsaic.transformers.update_charges import update_charges
+from molsaic.transformers.grid import generate_grid_files
+from molsaic.pipeline import MolecularPipeline
 
 class Benchmark:
-    """Class for benchmarking MolTools performance."""
+    """Class for benchmarking MolSAIC performance."""
     
     def __init__(self):
         """Initialize benchmark with sample file paths."""

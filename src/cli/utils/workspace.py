@@ -11,7 +11,7 @@ import logging
 from datetime import datetime
 from typing import Optional
 
-from moltools import config
+from molsaic import config
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +38,7 @@ def setup_workspace() -> str:
         raise PermissionError(f"Current directory is not writable: {current_dir}")
     
     # Create workspace directory if it doesn't exist yet
-    workspace_dir = os.path.join(current_dir, ".moltools_workspace")
+    workspace_dir = os.path.join(current_dir, ".molsaic_workspace")
     logger.info(f"Creating workspace directory: {workspace_dir}")
     
     # Try to create the directory
@@ -50,13 +50,13 @@ def setup_workspace() -> str:
         raise RuntimeError(f"Failed to create workspace directory: {workspace_dir}")
     
     # Explicitly set the workspace path
-    os.environ['MOLTOOLS_WORKSPACE_PATH'] = workspace_dir
+    os.environ['MOLSAIC_WORKSPACE_PATH'] = workspace_dir
     
     # Create the workspace
-    from moltools.workspace import create_global_workspace
+    from molsaic.workspace import create_global_workspace
     workspace_path = create_global_workspace("session_" + datetime.now().strftime("%Y%m%d_%H%M%S"))
     logger.debug(f"Created session workspace: {workspace_path}")
-    logger.info(f"All logs will be saved to: {os.path.join(workspace_path, 'moltools.log')}")
+    logger.info(f"All logs will be saved to: {os.path.join(workspace_path, 'molsaic.log')}")
     
     return workspace_path
 

@@ -1,6 +1,6 @@
-# MolTools CLI Architecture
+# MolSAIC CLI Architecture
 
-This directory contains the modular command-line interface for the MolTools package. The architecture follows a command pattern where each subcommand is implemented as a separate class inheriting from a common base class.
+This directory contains the modular command-line interface for the MolSAIC package. The architecture follows a command pattern where each subcommand is implemented as a separate class inheriting from a common base class.
 
 ## Directory Structure
 
@@ -50,18 +50,18 @@ Shared utilities used by multiple commands, such as workspace management.
 
 ```bash
 # Main entry point
-moltools [global options] command [command options]
+molsaic [global options] command [command options]
 
 # Examples
-moltools packmol --input-file system.inp --execute
-moltools grid --mdf input.mdf --car input.car --grid 3
+molsaic packmol --input-file system.inp --execute
+molsaic grid --mdf input.mdf --car input.car --grid 3
 ```
 
 ### In Code
 
 ```python
 # Direct command execution for testing or integration
-from moltools.cli.commands.packmol_command import main
+from molsaic.cli.commands.packmol_command import main
 main()
 ```
 

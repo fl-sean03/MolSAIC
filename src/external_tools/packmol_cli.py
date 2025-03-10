@@ -13,13 +13,13 @@ import argparse
 import logging
 from pathlib import Path
 
-# Add the parent directory to the Python path so we can import moltools
+# Add the parent directory to the Python path so we can import molsaic
 parent_dir = str(Path(__file__).resolve().parents[2])
 if parent_dir not in sys.path:
     sys.path.insert(0, parent_dir)
 
-from moltools.external_tools import PackmolTool
-from moltools import config
+from molsaic.external_tools import PackmolTool
+from molsaic import config
 
 def setup_logging(verbose=False, log_file="packmol_runner.log"):
     """

@@ -1,6 +1,6 @@
 #!/bin/bash
-# Run all integration tests for MolTools
-# This script runs all the integration tests and benchmarks for the MolTools package
+# Run all integration tests for MolSAIC
+# This script runs all the integration tests and benchmarks for the MolSAIC package
 
 # Exit on error
 set -e

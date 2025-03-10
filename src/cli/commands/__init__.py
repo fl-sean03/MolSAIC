@@ -6,7 +6,7 @@ be imported and registered in the get_commands() function.
 """
 
 from typing import Dict, Type
-from moltools.cli.base import BaseCommand
+from molsaic.cli.base import BaseCommand
 
 # Import command classes here
 # from .grid_command import GridCommand

@@ -11,7 +11,7 @@ import tempfile
 import glob
 from typing import Optional, List, Dict, Any, Union, Tuple
 
-from moltools.models.system import System
+from molsaic.models.system import System
 from .base import BaseExternalTool
 from .utils import create_temp_file
 

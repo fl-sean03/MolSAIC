@@ -8,7 +8,7 @@ import sys
 import json
 from pathlib import Path
 
-from moltools.transformers.update_ff import update_ff_types
+from molsaic.transformers.update_ff import update_ff_types
 
 def main():
     """Force-field update example main function."""

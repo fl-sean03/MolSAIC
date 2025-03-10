@@ -1,5 +1,5 @@
 """
-Command-line interface module for MolTools.
+Command-line interface module for MolSAIC.
 Provides entry point for command-line operations.
 """
 
@@ -10,9 +10,9 @@ import json
 import os
 from datetime import datetime
 
-from moltools import config
-from moltools.transformers import grid, update_ff, update_charges
-from moltools.pipeline import MolecularPipeline
+from molsaic import config
+from molsaic.transformers import grid, update_ff, update_charges
+from molsaic.pipeline import MolecularPipeline
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +24,7 @@ def main():
     config.setup_logging()
     
     parser = argparse.ArgumentParser(
-        description="MolTools - Molecular Data Processing Tools",
+        description="MolSAIC - Molecular Structure Analysis and Integration Console",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     
@@ -123,7 +123,7 @@ def main():
             return 1
             
         # Create workspace directory if it doesn't exist yet
-        workspace_dir = os.path.join(current_dir, ".moltools_workspace")
+        workspace_dir = os.path.join(current_dir, ".molsaic_workspace")
         logger.info(f"Creating workspace directory: {workspace_dir}")
         
         # Try to create the directory
@@ -135,13 +135,13 @@ def main():
             return 1
             
         # Explicitly set the workspace path
-        os.environ['MOLTOOLS_WORKSPACE_PATH'] = workspace_dir
+        os.environ['MOLSAIC_WORKSPACE_PATH'] = workspace_dir
         
         # Create the workspace
-        from moltools.workspace import create_global_workspace
+        from molsaic.workspace import create_global_workspace
         workspace_path = create_global_workspace("session_" + datetime.now().strftime("%Y%m%d_%H%M%S"))
         logger.debug(f"Created session workspace: {workspace_path}")
-        logger.info(f"All logs will be saved to: {os.path.join(workspace_path, 'moltools.log')}")
+        logger.info(f"All logs will be saved to: {os.path.join(workspace_path, 'molsaic.log')}")
     except Exception as e:
         logger.error(f"Failed to set up workspace: {str(e)}")
         logger.error(f"Error type: {type(e).__name__}")
@@ -362,7 +362,7 @@ def main():
         
         try:
             # Import the Packmol tool
-            from moltools.external_tools import PackmolTool
+            from molsaic.external_tools import PackmolTool
             
             # Create a Packmol tool instance
             packmol = PackmolTool()

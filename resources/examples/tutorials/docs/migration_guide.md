@@ -4,7 +4,7 @@ This guide provides information and examples to help you migrate your code from 
 
 ## Why Migrate?
 
-The file-based API in MONET is **deprecated** and will be removed in version 2.0.0. Here's why you should migrate:
+The file-based API in MolSAIC is **deprecated** and will be removed in version 2.0.0. Here's why you should migrate:
 
 - **Better Performance**: The object-based API eliminates intermediate file I/O for chained operations
 - **More Features**: New features like external tools integration are only available in the object-based API

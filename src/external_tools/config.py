@@ -26,12 +26,12 @@ EXECUTABLES = {
     # - None (expect in PATH)
     # - Absolute path to executable
     # - List of potential locations to check
-    'msi2namd': os.environ.get('MOLTOOLS_MSI2NAMD_PATH', '/home/sf2/LabWork/software/msi2namd.exe'),
-    'packmol': os.environ.get('MOLTOOLS_PACKMOL_PATH', '/home/sf2/LabWork/software/packmol-20.15.3/packmol'),
+    'msi2namd': os.environ.get('MOLSAIC_MSI2NAMD_PATH', '/home/sf2/LabWork/software/msi2namd.exe'),
+    'packmol': os.environ.get('MOLSAIC_PACKMOL_PATH', '/home/sf2/LabWork/software/packmol-20.15.3/packmol'),
 }
 
 # Maximum concurrent external processes
-MAX_CONCURRENT_PROCESSES = int(os.environ.get('MOLTOOLS_MAX_PROCESSES', '4'))
+MAX_CONCURRENT_PROCESSES = int(os.environ.get('MOLSAIC_MAX_PROCESSES', '4'))
 
 # Timeouts (in seconds)
-DEFAULT_PROCESS_TIMEOUT = int(os.environ.get('MOLTOOLS_PROCESS_TIMEOUT', '300'))  # 5 minutes
+DEFAULT_PROCESS_TIMEOUT = int(os.environ.get('MOLSAIC_PROCESS_TIMEOUT', '300'))  # 5 minutes

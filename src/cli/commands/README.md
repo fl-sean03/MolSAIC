@@ -1,6 +1,6 @@
 # CLI Commands
 
-This directory contains implementations of CLI commands for the MolTools package. Each command is implemented as a separate module, inheriting from the `BaseCommand` class in `moltools.cli.base`.
+This directory contains implementations of CLI commands for the MolSAIC package. Each command is implemented as a separate module, inheriting from the `BaseCommand` class in `molsaic.cli.base`.
 
 ## Command Structure
 
@@ -24,7 +24,7 @@ To add a new command:
 
 ```python
 # your_command.py
-from moltools.cli.base import BaseCommand
+from molsaic.cli.base import BaseCommand
 
 class YourCommand(BaseCommand):
     name = "your-command"
@@ -43,7 +43,7 @@ class YourCommand(BaseCommand):
 # Optional standalone entry point
 def main():
     import argparse
-    from moltools import config
+    from molsaic import config
     
     config.setup_logging()
     parser = argparse.ArgumentParser(description="Your Command")

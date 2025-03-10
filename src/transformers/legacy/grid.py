@@ -9,13 +9,13 @@ version {version}. Please use the object-based pipeline instead.
 
 import logging
 from ... import config
-from moltools.models.molecule import Molecule
-from moltools.models.system import System
-from moltools.parsers.car_parser import parse_car, car_blocks_to_molecules
-from moltools.parsers.mdf_parser import parse_mdf
-from moltools.parsers.integration import combine_mdf_car_data
-from moltools.writers.car_writer import write_car_file
-from moltools.writers.mdf_writer import write_mdf_file
+from molsaic.models.molecule import Molecule
+from molsaic.models.system import System
+from molsaic.parsers.car_parser import parse_car, car_blocks_to_molecules
+from molsaic.parsers.mdf_parser import parse_mdf
+from molsaic.parsers.integration import combine_mdf_car_data
+from molsaic.writers.car_writer import write_car_file
+from molsaic.writers.mdf_writer import write_mdf_file
 
 logger = logging.getLogger(__name__)
 

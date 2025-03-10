@@ -1,5 +1,5 @@
 """
-Templates and factory functions for common MolTools workflows.
+Templates and factory functions for common MolSAIC workflows.
 """
 
 import os

@@ -10,7 +10,7 @@ import logging
 from abc import ABC, abstractmethod
 from typing import Dict, Any, Optional
 
-from moltools import config
+from molsaic import config
 
 class BaseCommand(ABC):
     """
@@ -35,7 +35,7 @@ class BaseCommand(ABC):
         if not self.help:
             raise ValueError(f"Command {self.__class__.__name__} must define a help attribute")
             
-        self.logger = logging.getLogger(f"moltools.cli.{self.name}")
+        self.logger = logging.getLogger(f"molsaic.cli.{self.name}")
     
     @abstractmethod
     def configure_parser(self, parser: argparse.ArgumentParser) -> None:
@@ -88,7 +88,7 @@ class PipelineHelper:
             args (argparse.Namespace): The parsed command-line arguments
         """
         self.args = args
-        self.logger = logging.getLogger("moltools.cli.pipeline")
+        self.logger = logging.getLogger("molsaic.cli.pipeline")
         self.use_object_mode = not getattr(args, 'file_mode', False)
         self.debug = getattr(args, 'debug_output', False)
         self.debug_prefix = getattr(args, 'debug_prefix', 'debug_')
@@ -101,7 +101,7 @@ class PipelineHelper:
         Returns:
             MolecularPipeline: A configured pipeline instance
         """
-        from moltools.pipeline import MolecularPipeline
+        from molsaic.pipeline import MolecularPipeline
         
         # Set configuration based on CLI args
         config.keep_all_workspaces = self.args.keep

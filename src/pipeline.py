@@ -356,7 +356,7 @@ class MolecularPipeline:
                 cleanup_workspace = False
             
             # Use the global session workspace
-            from moltools import config as main_config
+            from molsaic import config as main_config
             workspace_manager = main_config.session_workspace
             self._msi2namd_tool = MSI2NAMDTool(workspace_manager=workspace_manager)
             

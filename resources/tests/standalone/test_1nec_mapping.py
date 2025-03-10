@@ -6,8 +6,8 @@ Test script to verify force-field and charge updates with 1NEC sample files.
 import sys
 from pathlib import Path
 
-from moltools.transformers.update_ff import update_ff_types
-from moltools.transformers.update_charges import update_charges
+from molsaic.transformers.update_ff import update_ff_types
+from molsaic.transformers.update_charges import update_charges
 
 # Path to sample files
 SAMPLE_PATH = Path("samplefiles/1NEC")

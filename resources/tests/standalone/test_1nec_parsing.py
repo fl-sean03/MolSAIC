@@ -6,9 +6,9 @@ Test script to verify parsing of 1NEC sample files.
 import sys
 from pathlib import Path
 
-from moltools.parsers.car_parser import parse_car, car_blocks_to_molecules
-from moltools.parsers.mdf_parser import parse_mdf
-from moltools.parsers.pdb_parser import parse_pdb, pdb_atoms_to_molecules
+from molsaic.parsers.car_parser import parse_car, car_blocks_to_molecules
+from molsaic.parsers.mdf_parser import parse_mdf
+from molsaic.parsers.pdb_parser import parse_pdb, pdb_atoms_to_molecules
 
 # Path to sample files
 SAMPLE_PATH = Path("samplefiles/1NEC")

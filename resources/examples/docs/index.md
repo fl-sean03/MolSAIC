@@ -1,6 +1,6 @@
-# MONET Examples
+# MolSAIC Examples
 
-This section provides various examples of how to use the MONET (MOlecular NEtwork Toolkit) package for common tasks and workflows.
+This section provides various examples of how to use the MolSAIC (MOlecular NEtwork Toolkit) package for common tasks and workflows.
 
 ## Basic Examples
 

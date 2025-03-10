@@ -8,9 +8,9 @@ import tempfile
 import json
 from unittest.mock import patch, MagicMock
 
-from moltools.models.system import System
-from moltools.models.molecule import Molecule
-from moltools.models.atom import Atom
+from molsaic.models.system import System
+from molsaic.models.molecule import Molecule
+from molsaic.models.atom import Atom
 
 class TestSystemEnhancements(unittest.TestCase):
     """Test cases for the enhanced System class methods."""
@@ -212,8 +212,8 @@ class TestSystemEnhancements(unittest.TestCase):
             if os.path.exists(mdf_path):
                 os.unlink(mdf_path)
     
-    @patch('moltools.models.system.parse_car')
-    @patch('moltools.models.system.parse_mdf')
+    @patch('molsaic.models.system.parse_car')
+    @patch('molsaic.models.system.parse_mdf')
     def test_system_from_files(self, mock_parse_mdf, mock_parse_car):
         """Test creating a System from files using the factory method."""
         # Set up mocks

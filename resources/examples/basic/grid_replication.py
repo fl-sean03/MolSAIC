@@ -7,7 +7,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from moltools.transformers.grid import generate_grid_files
+from molsaic.transformers.grid import generate_grid_files
 
 def main():
     """Grid replication example main function."""

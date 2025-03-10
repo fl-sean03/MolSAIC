@@ -8,15 +8,15 @@ import tempfile
 import json
 from unittest.mock import patch, MagicMock
 
-from moltools.pipeline import MolecularPipeline
-from moltools.models.system import System
-from moltools.models.molecule import Molecule
-from moltools.models.atom import Atom
+from molsaic.pipeline import MolecularPipeline
+from molsaic.models.system import System
+from molsaic.models.molecule import Molecule
+from molsaic.models.atom import Atom
 
 class TestMolecularPipeline(unittest.TestCase):
     """Test cases for the MolecularPipeline class."""
     
-    @patch('moltools.models.system.System.system_from_files')
+    @patch('molsaic.models.system.System.system_from_files')
     def test_load(self, mock_system_from_files):
         """Test loading files into the pipeline."""
         # Set up mock
@@ -203,7 +203,7 @@ class TestMolecularPipeline(unittest.TestCase):
         mock_system = MagicMock()
         mock_system.molecules = [MagicMock()]
         
-        with patch('moltools.models.system.System.system_from_files') as mock_system_from_files:
+        with patch('molsaic.models.system.System.system_from_files') as mock_system_from_files:
             mock_system_from_files.return_value = mock_system
             
             # Create pipeline with fluent API

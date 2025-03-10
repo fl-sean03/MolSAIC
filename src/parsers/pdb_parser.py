@@ -4,8 +4,8 @@ Module for parsing PDB (Protein Data Bank) files.
 
 import logging
 import re
-from moltools.models.atom import Atom
-from moltools.models.molecule import Molecule
+from molsaic.models.atom import Atom
+from molsaic.models.molecule import Molecule
 
 logger = logging.getLogger(__name__)
 

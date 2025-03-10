@@ -1,6 +1,6 @@
-# MONET Development History
+# MolSAIC Development History
 
-This document tracks the development history of the MONET project, providing a chronological record of implemented features and enhancements.
+This document tracks the development history of the MolSAIC project, providing a chronological record of implemented features and enhancements.
 
 ## Phase 1: Foundation & Core Functionality
 

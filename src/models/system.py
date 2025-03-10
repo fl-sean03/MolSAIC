@@ -102,7 +102,7 @@ class System:
         header_lines = [
             "!BIOSYM molecular_data 4",
             "",
-            f"!Date: {datetime.now().strftime('%a %b %d %H:%M:%S %Y')}   MolTools Generated MDF file",
+            f"!Date: {datetime.now().strftime('%a %b %d %H:%M:%S %Y')}   MolSAIC Generated MDF file",
             "",
             "#topology",
             "",
@@ -154,7 +154,7 @@ class System:
             header_lines = [
                 "!BIOSYM archive 3",
                 "PBC=ON",
-                "MolTools Generated CAR File",
+                "MolSAIC Generated CAR File",
                 f"!DATE {datetime.now().strftime('%a %b %d %H:%M:%S %Y')}",
                 f"PBC   {self.pbc[0]:.4f}   {self.pbc[1]:.4f}   {self.pbc[2]:.4f}   "
                 f"{self.pbc[3]:.4f}   {self.pbc[4]:.4f}   {self.pbc[5]:.4f} ({self.pbc[6]})"

@@ -11,7 +11,7 @@ import shutil
 import logging
 import glob
 
-from moltools.pipeline import MolecularPipeline
+from molsaic.pipeline import MolecularPipeline
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, 

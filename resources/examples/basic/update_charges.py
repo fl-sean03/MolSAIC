@@ -8,7 +8,7 @@ import sys
 import json
 from pathlib import Path
 
-from moltools.transformers.update_charges import update_charges
+from molsaic.transformers.update_charges import update_charges
 
 def main():
     """Charge update example main function."""

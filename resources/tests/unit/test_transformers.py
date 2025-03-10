@@ -7,14 +7,14 @@ import tempfile
 import os
 import json
 
-from moltools.models.atom import Atom
-from moltools.models.molecule import Molecule
-from moltools.models.system import System
+from molsaic.models.atom import Atom
+from molsaic.models.molecule import Molecule
+from molsaic.models.system import System
 # Import from legacy modules instead of the new refactored ones
-from moltools.transformers.legacy.grid import generate_grid
-from moltools.transformers.update_ff import update_ff_types
-from moltools.transformers.legacy.update_ff import load_mapping
-from moltools.transformers.update_charges import update_charges
+from molsaic.transformers.legacy.grid import generate_grid
+from molsaic.transformers.update_ff import update_ff_types
+from molsaic.transformers.legacy.update_ff import load_mapping
+from molsaic.transformers.update_charges import update_charges
 
 class TestGridTransformer(unittest.TestCase):
     """Tests for the grid transformer."""

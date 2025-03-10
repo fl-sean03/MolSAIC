@@ -6,9 +6,9 @@ Test script to verify parsing and handling of 3NEC sample files.
 import sys
 from pathlib import Path
 
-from moltools.parsers.car_parser import parse_car, car_blocks_to_molecules
-from moltools.parsers.mdf_parser import parse_mdf
-from moltools.transformers.grid import grid_from_files
+from molsaic.parsers.car_parser import parse_car, car_blocks_to_molecules
+from molsaic.parsers.mdf_parser import parse_mdf
+from molsaic.transformers.grid import grid_from_files
 
 # Path to sample files
 SAMPLE_PATH = Path("samplefiles/3NEC")

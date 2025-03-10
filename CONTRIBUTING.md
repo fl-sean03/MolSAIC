@@ -1,6 +1,6 @@
-# Contributing to MolTools
+# Contributing to MolSAIC
 
-Thank you for considering contributing to MolTools! This document provides guidelines and instructions for contributing to this project.
+Thank you for considering contributing to MolSAIC! This document provides guidelines and instructions for contributing to this project.
 
 ## Code of Conduct
 
@@ -39,8 +39,8 @@ For enhancement suggestions, include:
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/moltools.git
-cd moltools
+git clone https://github.com/yourusername/molsaic.git
+cd molsaic
 ```
 
 2. Install in development mode
@@ -74,4 +74,4 @@ python run_tests.py
 
 ## License
 
-By contributing to MolTools, you agree that your contributions will be licensed under the project's MIT license.
+By contributing to MolSAIC, you agree that your contributions will be licensed under the project's MIT license.

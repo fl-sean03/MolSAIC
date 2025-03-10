@@ -1,6 +1,6 @@
-# MolTools Architecture Evolution: From File-Based to Object-Based Transformations
+# MolSAIC Architecture Evolution: From File-Based to Object-Based Transformations
 
-This document outlines the architectural evolution of the MolTools package from a file-based transformation approach to an object-based pipeline architecture. It serves as a guide for developers working on implementing Tasks 17-25.
+This document outlines the architectural evolution of the MolSAIC package from a file-based transformation approach to an object-based pipeline architecture. It serves as a guide for developers working on implementing Tasks 17-25.
 
 ## Current Architecture (File-Based)
 
@@ -112,8 +112,8 @@ The file-based approach will be preserved through:
 
 ### File-Based Approach (Legacy)
 ```python
-from moltools.transformers.update_ff import update_ff_types
-from moltools.transformers.update_charges import update_charges
+from molsaic.transformers.update_ff import update_ff_types
+from molsaic.transformers.update_charges import update_charges
 
 # Step 1: Update force-field types (creates temp file)
 update_ff_types(
@@ -136,7 +136,7 @@ update_charges(
 
 ### Object-Based Approach (New)
 ```python
-from moltools.pipeline import MolecularPipeline
+from molsaic.pipeline import MolecularPipeline
 
 # Chain operations without intermediate files
 MolecularPipeline().load("input.car", "input.mdf") \
@@ -147,7 +147,7 @@ MolecularPipeline().load("input.car", "input.mdf") \
 
 ### With Debug Output
 ```python
-from moltools.pipeline import MolecularPipeline
+from molsaic.pipeline import MolecularPipeline
 
 # Chain operations with debug files at each step
 pipeline = MolecularPipeline(debug=True, debug_prefix="debug_")

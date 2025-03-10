@@ -6,17 +6,17 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="monet",
+    name="molsaic",
     version="0.2.0",
     author="Molecular Simulation Laboratory",
-    author_email="monet-dev@example.org",
-    description="MONET (MOlecular NEtwork Toolkit) - Comprehensive molecular toolkit",
+    author_email="molsaic-dev@example.org",
+    description="MolSAIC (Molecular Structure Analysis and Integration Console) - Comprehensive molecular toolkit",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/molsim-lab/monet",
+    url="https://github.com/molsim-lab/molsaic",
     project_urls={
-        "Bug Tracker": "https://github.com/molsim-lab/monet/issues",
-        "Documentation": "https://github.com/molsim-lab/monet/docs",
+        "Bug Tracker": "https://github.com/molsim-lab/molsaic/issues",
+        "Documentation": "https://github.com/molsim-lab/molsaic/docs",
     },
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -32,7 +32,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "monet=src.cli:main",
+            "molsaic=molsaic.cli:main",
         ],
     },
     include_package_data=True,

@@ -1,6 +1,6 @@
-# MONET Documentation
+# MolSAIC Documentation
 
-Welcome to the MONET (MOlecular NEtwork Toolkit) documentation. This document serves as a central hub for all resources related to using and understanding MONET.
+Welcome to the MolSAIC (MOlecular NEtwork Toolkit) documentation. This document serves as a central hub for all resources related to using and understanding MolSAIC.
 
 ## Quick Start
 
@@ -11,12 +11,12 @@ Welcome to the MONET (MOlecular NEtwork Toolkit) documentation. This document se
 ## Learning Resources
 
 ### Tutorials
-Learn step-by-step how to use MONET effectively:
+Learn step-by-step how to use MolSAIC effectively:
 - [Common Workflows](examples/tutorials/docs/common_workflows.md) - Tutorials for common molecular modeling tasks
 - [Migration Guide](examples/tutorials/docs/migration_guide.md) - Guide to migrate from file-based to object-based API
 
 ### Architecture
-Understand how MONET is designed and implemented:
+Understand how MolSAIC is designed and implemented:
 - [Architecture Overview](architecture/overview.md) - High-level overview of the system architecture
 - [Design Decisions](architecture/design.md) - Details on key design decisions
 - [Transition Plan](architecture/transition_plan.md) - Plan for API evolution

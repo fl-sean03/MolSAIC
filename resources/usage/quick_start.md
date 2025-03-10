@@ -1,16 +1,16 @@
 # Quick Start Guide
 
-This guide helps you quickly get started with MONET, covering the essential functionality for molecular data manipulation.
+This guide helps you quickly get started with MolSAIC, covering the essential functionality for molecular data manipulation.
 
 ## Installation
 
 ```bash
 # From PyPI (recommended)
-pip install monet-toolkit
+pip install molsaic
 
 # From source
-git clone https://github.com/molsim-lab/monet.git
-cd monet
+git clone https://github.com/molsim-lab/molsaic.git
+cd molsaic
 pip install -e .
 ```
 
@@ -41,7 +41,7 @@ print(f"Number of atoms: {sum(len(mol.atoms) for mol in system.molecules)}")
 
 ### Using the Pipeline API
 
-The recommended way to use MONET is through the pipeline API, which provides a clean, chainable interface:
+The recommended way to use MolSAIC is through the pipeline API, which provides a clean, chainable interface:
 
 ```python
 from src.pipeline import MolecularPipeline
@@ -57,7 +57,7 @@ from src.pipeline import MolecularPipeline
 
 ### Command Line Interface
 
-MONET also provides a command-line interface for common operations:
+MolSAIC also provides a command-line interface for common operations:
 
 ```bash
 # Grid replication

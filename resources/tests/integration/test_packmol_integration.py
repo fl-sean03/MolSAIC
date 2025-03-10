@@ -11,11 +11,11 @@ import unittest
 import tempfile
 from pathlib import Path
 
-# Add the parent directory to the Python path so we can import moltools
+# Add the parent directory to the Python path so we can import molsaic
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 
-from moltools.external_tools import PackmolTool
+from molsaic.external_tools import PackmolTool
 
 class TestPackmolIntegration(unittest.TestCase):
     """Test cases for Packmol integration."""
@@ -149,7 +149,7 @@ END
         self.assertIn("config", input_info)
         self.assertEqual(["3.0"], input_info["config"]["global"]["tolerance"])
     
-    @unittest.skipIf(not os.environ.get("MOLTOOLS_PACKMOL_PATH"), "Packmol executable not available")
+    @unittest.skipIf(not os.environ.get("MOLSAIC_PACKMOL_PATH"), "Packmol executable not available")
     def test_execute(self):
         """Test executing Packmol."""
         # Skip if Packmol is not available

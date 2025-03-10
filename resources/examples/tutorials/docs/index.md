@@ -1,10 +1,10 @@
-# MONET Tutorials
+# MolSAIC Tutorials
 
-This section contains step-by-step tutorials for using MONET (MOlecular NEtwork Toolkit).
+This section contains step-by-step tutorials for using MolSAIC (MOlecular NEtwork Toolkit).
 
 - [Common Workflows](common_workflows.md) - Common molecular modeling workflows
 - [Migration Guide](migration_guide.md) - Migrating from file-based to object-based API
-- [Quick Start](../usage/quick_start.md) - Getting started with MONET quickly
+- [Quick Start](../usage/quick_start.md) - Getting started with MolSAIC quickly
 
 ## Tutorial Structure
 

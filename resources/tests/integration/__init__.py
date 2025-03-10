@@ -1,3 +1,3 @@
 """
-Integration tests for MolTools package.
+Integration tests for MolSAIC package.
 """

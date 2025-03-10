@@ -6,7 +6,7 @@ Test script to verify grid replication with 1NEC sample files.
 import sys
 from pathlib import Path
 
-from moltools.transformers.grid import grid_from_files, generate_grid_files
+from molsaic.transformers.grid import grid_from_files, generate_grid_files
 
 # Path to sample files
 SAMPLE_PATH = Path("samplefiles/1NEC")

@@ -1,6 +1,6 @@
-# MolTools: Common Workflows Tutorial
+# MolSAIC: Common Workflows Tutorial
 
-This tutorial covers common workflows using both the file-based and object-based approaches in MolTools.
+This tutorial covers common workflows using both the file-based and object-based approaches in MolSAIC.
 
 ## Table of Contents
 
@@ -14,14 +14,14 @@ This tutorial covers common workflows using both the file-based and object-based
 
 ## Installation
 
-Before using MolTools, you need to install it:
+Before using MolSAIC, you need to install it:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/moltools.git
+git clone https://github.com/yourusername/molsaic.git
 
 # Navigate to the directory
-cd moltools
+cd molsaic
 
 # Install in development mode
 pip install -e .
@@ -34,19 +34,19 @@ Grid replication creates a 3D grid of replicated molecules, useful for creating 
 ### File-Based Approach (CLI)
 
 ```bash
-python -m moltools.cli grid --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output-mdf grid_box.mdf --output-car grid_box.car
+python -m molsaic.cli grid --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output-mdf grid_box.mdf --output-car grid_box.car
 ```
 
 ### Object-Based Approach (CLI)
 
 ```bash
-python -m moltools.cli grid --object-mode --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output-mdf grid_box.mdf --output-car grid_box.car
+python -m molsaic.cli grid --object-mode --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output-mdf grid_box.mdf --output-car grid_box.car
 ```
 
 ### File-Based Approach (Python)
 
 ```python
-from moltools.transformers.grid import generate_grid_files
+from molsaic.transformers.grid import generate_grid_files
 
 generate_grid_files(
     car_file="input.car",
@@ -61,7 +61,7 @@ generate_grid_files(
 ### Object-Based Approach (Python)
 
 ```python
-from moltools.pipeline import MolecularPipeline
+from molsaic.pipeline import MolecularPipeline
 
 pipeline = MolecularPipeline()
 pipeline.load("input.car", "input.mdf") \
@@ -76,19 +76,19 @@ Update force-field types based on charge and element mapping.
 ### File-Based Approach (CLI)
 
 ```bash
-python -m moltools.cli update-ff --car input.car --mdf input.mdf --output-car updated.car --output-mdf updated.mdf --mapping mapping.json
+python -m molsaic.cli update-ff --car input.car --mdf input.mdf --output-car updated.car --output-mdf updated.mdf --mapping mapping.json
 ```
 
 ### Object-Based Approach (CLI)
 
 ```bash
-python -m moltools.cli update-ff --object-mode --car input.car --mdf input.mdf --output-car updated.car --output-mdf updated.mdf --mapping mapping.json
+python -m molsaic.cli update-ff --object-mode --car input.car --mdf input.mdf --output-car updated.car --output-mdf updated.mdf --mapping mapping.json
 ```
 
 ### File-Based Approach (Python)
 
 ```python
-from moltools.transformers.update_ff import update_ff_types
+from molsaic.transformers.update_ff import update_ff_types
 
 update_ff_types(
     car_file="input.car",
@@ -102,7 +102,7 @@ update_ff_types(
 ### Object-Based Approach (Python)
 
 ```python
-from moltools.pipeline import MolecularPipeline
+from molsaic.pipeline import MolecularPipeline
 
 pipeline = MolecularPipeline()
 pipeline.load("input.car", "input.mdf") \
@@ -117,19 +117,19 @@ Update atomic charges based on force-field type mapping.
 ### File-Based Approach (CLI)
 
 ```bash
-python -m moltools.cli update-charges --car input.car --mdf input.mdf --output-car updated.car --output-mdf updated.mdf --mapping charge_mapping.json
+python -m molsaic.cli update-charges --car input.car --mdf input.mdf --output-car updated.car --output-mdf updated.mdf --mapping charge_mapping.json
 ```
 
 ### Object-Based Approach (CLI)
 
 ```bash
-python -m moltools.cli update-charges --object-mode --car input.car --mdf input.mdf --output-car updated.car --output-mdf updated.mdf --mapping charge_mapping.json
+python -m molsaic.cli update-charges --object-mode --car input.car --mdf input.mdf --output-car updated.car --output-mdf updated.mdf --mapping charge_mapping.json
 ```
 
 ### File-Based Approach (Python)
 
 ```python
-from moltools.transformers.update_charges import update_charges
+from molsaic.transformers.update_charges import update_charges
 
 update_charges(
     car_file="input.car",
@@ -143,7 +143,7 @@ update_charges(
 ### Object-Based Approach (Python)
 
 ```python
-from moltools.pipeline import MolecularPipeline
+from molsaic.pipeline import MolecularPipeline
 
 pipeline = MolecularPipeline()
 pipeline.load("input.car", "input.mdf") \
@@ -158,9 +158,9 @@ Combining multiple transformations is where the object-based approach really shi
 ### File-Based Approach (with intermediate files)
 
 ```python
-from moltools.transformers.update_ff import update_ff_types
-from moltools.transformers.update_charges import update_charges
-from moltools.transformers.grid import generate_grid_files
+from molsaic.transformers.update_ff import update_ff_types
+from molsaic.transformers.update_charges import update_charges
+from molsaic.transformers.grid import generate_grid_files
 
 # Step 1: Update force-field types
 update_ff_types(
@@ -199,7 +199,7 @@ for file in ["temp1.car", "temp1.mdf", "temp2.car", "temp2.mdf"]:
 ### Object-Based Approach (chained operations)
 
 ```python
-from moltools.pipeline import MolecularPipeline
+from molsaic.pipeline import MolecularPipeline
 
 # Chain all operations in a single pipeline
 (MolecularPipeline()
@@ -244,7 +244,7 @@ pipeline.save("final.car", "final.mdf")
 This is also available in the CLI:
 
 ```bash
-python -m moltools.cli update-ff --object-mode --debug-output --debug-prefix "debug_" --car input.car --mdf input.mdf --output-car updated.car --output-mdf updated.mdf --mapping mapping.json
+python -m molsaic.cli update-ff --object-mode --debug-output --debug-prefix "debug_" --car input.car --mdf input.mdf --output-car updated.car --output-mdf updated.mdf --mapping mapping.json
 ```
 
 ### Verifying Results

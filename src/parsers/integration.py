@@ -6,17 +6,17 @@ Provides functions to validate files before parsing and handle validation errors
 import logging
 import os
 from typing import Tuple, Dict, List, Any, Optional, Union
-from moltools.models.molecule import Molecule
+from molsaic.models.molecule import Molecule
 
-from moltools.validation import (
+from molsaic.validation import (
     validate_mdf_file, 
     validate_car_file, 
     validate_pdb_file,
     check_file_type,
     validate_file
 )
-from moltools.parsers.mdf_parser import parse_mdf, mdf_to_molecules
-from moltools.parsers.car_parser import parse_car, car_blocks_to_molecules
+from molsaic.parsers.mdf_parser import parse_mdf, mdf_to_molecules
+from molsaic.parsers.car_parser import parse_car, car_blocks_to_molecules
 
 logger = logging.getLogger(__name__)
 
@@ -257,7 +257,7 @@ def detect_and_process_file(filename: str) -> Tuple[bool, Optional[Any], Optiona
 
 # Example usage in a script:
 """
-from moltools.parsers.integration import safe_parse_mdf, safe_parse_car, detect_and_process_file
+from molsaic.parsers.integration import safe_parse_mdf, safe_parse_car, detect_and_process_file
 
 # Example 1: Process MDF file with validation
 success, data, error = safe_parse_mdf("example.mdf")

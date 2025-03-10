@@ -5,8 +5,8 @@ Module for parsing CAR (Materials Studio Coordinate Archive) files.
 import logging
 import os
 from typing import Tuple, Dict, List, Any, Optional, Union
-from moltools.models.atom import Atom
-from moltools.models.molecule import Molecule
+from molsaic.models.atom import Atom
+from molsaic.models.molecule import Molecule
 
 logger = logging.getLogger(__name__)
 
@@ -59,7 +59,7 @@ def parse_car(filename: str, validate: bool = True) -> Tuple[List[str], List[Lis
     # Perform validation if requested
     if validate:
         try:
-            from moltools.validation import validate_car_file
+            from molsaic.validation import validate_car_file
             is_valid, errors = validate_car_file(filename)
             if not is_valid:
                 error_msg = "\n".join(errors)

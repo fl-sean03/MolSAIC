@@ -1,5 +1,5 @@
 """
-Configuration module for MolTools.
+Configuration module for MolSAIC.
 Provides default parameters and logging setup.
 """
 
@@ -19,8 +19,8 @@ DEFAULT_OBJECT_MODE = True  # Set object-based pipeline as the default
 # IMPORTANT: Always use current working directory, never fall back to temp
 # The actual directory creation and error handling happens in the CLI
 DEFAULT_WORKSPACE_PATH = os.environ.get(
-    'MOLTOOLS_WORKSPACE_PATH', 
-    os.path.join(".", ".moltools_workspace")  # Use relative path to avoid getcwd() issues
+    'MOLSAIC_WORKSPACE_PATH', 
+    os.path.join(".", ".molsaic_workspace")  # Use relative path to avoid getcwd() issues
 )
 
 # Don't try to create the directory at import time - we'll do this in the CLI
@@ -44,7 +44,7 @@ PRESERVE_FILE_PATTERNS = [
     '*_error.log',
     '*_command.log',
     'process_*.log',
-    'moltools.log'
+    'molsaic.log'
 ]
 
 # Deprecation settings for file-mode
@@ -94,7 +94,7 @@ class MemoryHandler(logging.Handler):
 
 def setup_logging(log_level=DEFAULT_LOG_LEVEL):
     """
-    Sets up logging for MolTools.
+    Sets up logging for MolSAIC.
     
     Args:
         log_level (str): Logging level. Default is INFO.

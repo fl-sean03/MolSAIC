@@ -1,6 +1,6 @@
 # API Reference
 
-This section contains detailed API documentation for MONET (MOlecular NEtwork Toolkit).
+This section contains detailed API documentation for MolSAIC (MOlecular NEtwork Toolkit).
 
 ## Main Classes
 
@@ -29,7 +29,7 @@ This section contains detailed API documentation for MONET (MOlecular NEtwork To
 
 ## Command Line Interface
 
-MONET provides a command-line interface for common operations. Use `moltools --help` to see all available commands.
+MolSAIC provides a command-line interface for common operations. Use `molsaic --help` to see all available commands.
 
 ### Available Commands
 
@@ -44,18 +44,18 @@ MONET provides a command-line interface for common operations. Use `moltools --h
 #### Grid Replication
 
 ```bash
-moltools grid --mdf input.mdf --car input.car --grid 3 --output-mdf grid.mdf --output-car grid.car
+molsaic grid --mdf input.mdf --car input.car --grid 3 --output-mdf grid.mdf --output-car grid.car
 ```
 
 #### Packmol Integration
 
 ```bash
 # Parse and print Packmol configuration
-moltools packmol --input-file system.inp --print-json
+molsaic packmol --input-file system.inp --print-json
 
 # Generate a new Packmol input file with updates
-moltools packmol --input-file system.inp --update-file updates.json --output-file modified.inp
+molsaic packmol --input-file system.inp --update-file updates.json --output-file modified.inp
 
 # Execute Packmol
-moltools packmol --input-file system.inp --execute
+molsaic packmol --input-file system.inp --execute
 ```

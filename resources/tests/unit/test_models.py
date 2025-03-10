@@ -3,9 +3,9 @@ Test module for models.
 """
 
 import unittest
-from moltools.models.atom import Atom
-from moltools.models.molecule import Molecule
-from moltools.models.system import System
+from molsaic.models.atom import Atom
+from molsaic.models.molecule import Molecule
+from molsaic.models.system import System
 
 class TestAtom(unittest.TestCase):
     """Tests for the Atom class."""

@@ -13,20 +13,20 @@ This tool allows you to:
 
 ## Command Line Usage
 
-MONET provides a command-line interface for interacting with Packmol through the integrated tool:
+MolSAIC provides a command-line interface for interacting with Packmol through the integrated tool:
 
 ```bash
 # Parse and print Packmol configuration as JSON
-moltools packmol --input-file system.inp --print-json
+molsaic packmol --input-file system.inp --print-json
 
 # Generate a new input file with updates from a JSON file
-moltools packmol --input-file system.inp --update-file updates.json --output-file modified.inp
+molsaic packmol --input-file system.inp --update-file updates.json --output-file modified.inp
 
 # Execute Packmol with an input file
-moltools packmol --input-file system.inp --execute
+molsaic packmol --input-file system.inp --execute
 
 # Generate a new input file with updates and execute Packmol
-moltools packmol --input-file system.inp --update-file updates.json --output-file modified.inp --execute
+molsaic packmol --input-file system.inp --update-file updates.json --output-file modified.inp --execute
 ```
 
 Example JSON update file (updates.json):
@@ -51,7 +51,7 @@ Example JSON update file (updates.json):
 ### Basic Usage
 
 ```python
-from moltools.external_tools import PackmolTool
+from molsaic.external_tools import PackmolTool
 
 # Initialize the tool
 packmol = PackmolTool()
@@ -111,7 +111,7 @@ Inherits from: `BaseExternalTool`
 PackmolTool(executable_path=None, workspace_manager=None, timeout=None)
 ```
 
-- `executable_path` (str, optional): Path to the Packmol executable. If None, will search PATH or use the value specified in environment variable `MOLTOOLS_PACKMOL_PATH`.
+- `executable_path` (str, optional): Path to the Packmol executable. If None, will search PATH or use the value specified in environment variable `MOLSAIC_PACKMOL_PATH`.
 - `workspace_manager` (WorkspaceManager, optional): Workspace manager to use. If None, a new one will be created.
 - `timeout` (int, optional): Default timeout for tool execution in seconds.
 

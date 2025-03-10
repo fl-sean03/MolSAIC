@@ -1,2 +1,2 @@
-# MolTools requirements
+# MolSAIC requirements
 # No external dependencies beyond standard library

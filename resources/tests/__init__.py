@@ -1,3 +1,3 @@
 """
-Test suite for MolTools package.
+Test suite for MolSAIC package.
 """

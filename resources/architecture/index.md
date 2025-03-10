@@ -1,6 +1,6 @@
 # Architecture Documentation
 
-This section contains detailed information about the MolTools architecture.
+This section contains detailed information about the MolSAIC architecture.
 
 - [Overview](overview.md) - High-level architecture overview
 - [Design Document](design.md) - Detailed design documentation

@@ -6,10 +6,10 @@ import unittest
 import tempfile
 import os
 
-from moltools.parsers.mdf_parser import parse_mdf
-from moltools.parsers.car_parser import parse_car, car_blocks_to_molecules
-from moltools.parsers.pdb_parser import parse_pdb, pdb_atoms_to_molecules
-from moltools.models.molecule import Molecule
+from molsaic.parsers.mdf_parser import parse_mdf
+from molsaic.parsers.car_parser import parse_car, car_blocks_to_molecules
+from molsaic.parsers.pdb_parser import parse_pdb, pdb_atoms_to_molecules
+from molsaic.models.molecule import Molecule
 
 class TestMDFParser(unittest.TestCase):
     """Tests for the MDF parser."""
