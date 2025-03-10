@@ -81,6 +81,14 @@
    - ⬜ Include file paths and command details in console output
    - ⬜ Add ability to save diagnostic information to a separate log file
 
+5. ✅ Rename 'convert-to-namd' to 'msi2namd' for consistency
+   - ✅ Rename CLI command from 'convert-to-namd' to 'msi2namd'
+   - ✅ Update method name in MolecularPipeline from 'convert_to_namd' to 'msi2namd'
+   - ✅ Update documentation (README.md, API docs, examples)
+   - ✅ Ensure backward compatibility (keep old method as deprecated)
+   - ✅ Update examples to reflect the new naming convention
+   - ✅ Update any references in msi2namd.py to match naming convention
+
 ## Future Task Ideas
 
 | Priority | Task | Description |

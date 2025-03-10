@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Example of NAMD conversion with MolSAIC.
+Example of MSI2NAMD conversion with MolSAIC.
 
-This example demonstrates how to use the convert_to_namd method to
+This example demonstrates how to use the msi2namd method to
 convert molecular files to NAMD format using the external tools integration
 framework.
 """
@@ -21,7 +21,7 @@ logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 def main():
-    """Run the NAMD conversion example."""
+    """Run the MSI2NAMD conversion example."""
     # Define sample files
     sample_dir = Path(__file__).parent.parent.parent / "samplefiles" / "1NEC"
     car_file = sample_dir / "NEC_0H.car"
@@ -31,7 +31,7 @@ def main():
     output_dir = Path("namd_output")
     output_dir.mkdir(exist_ok=True)
     
-    print(f"Converting {car_file.name} and {mdf_file.name} to NAMD format...")
+    print(f"Converting {car_file.name} and {mdf_file.name} to NAMD format using MSI2NAMD...")
     
     try:
         # Create pipeline
@@ -40,8 +40,8 @@ def main():
         # Load molecular system
         pipeline.load(str(car_file), str(mdf_file))
         
-        # Convert to NAMD format
-        pipeline.convert_to_namd(
+        # Convert to NAMD format using MSI2NAMD
+        pipeline.msi2namd(
             output_dir=str(output_dir),
             residue_name="NEC",
             # Parameter file would be specified here if available

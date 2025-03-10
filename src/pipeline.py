@@ -301,13 +301,13 @@ class MolecularPipeline:
         
         return self.system
     
-    def convert_to_namd(self, 
-                        output_dir: Optional[str] = None, 
-                        residue_name: Optional[str] = None,
-                        parameter_file: Optional[str] = None,
-                        charge_groups: bool = False,
-                        cleanup_workspace: bool = True,
-                        **kwargs) -> 'MolecularPipeline':
+    def msi2namd(self, 
+                output_dir: Optional[str] = None, 
+                residue_name: Optional[str] = None,
+                parameter_file: Optional[str] = None,
+                charge_groups: bool = False,
+                cleanup_workspace: bool = True,
+                **kwargs) -> 'MolecularPipeline':
         """
         Convert the current system to NAMD format using MSI2NAMD.
         
@@ -347,7 +347,7 @@ class MolecularPipeline:
             if first_mol.atoms:
                 residue_name = first_mol.atoms[0].residue_name
                 
-        logger.info(f"Converting system to NAMD format (output dir: {output_dir})")
+        logger.info(f"Converting system to NAMD format using MSI2NAMD (output dir: {output_dir})")
         
         try:
             # Create MSI2NAMD tool instance, respecting the pipeline's keep_workspace setting
@@ -384,12 +384,12 @@ class MolecularPipeline:
             # Log success
             file_paths = [path for path in self.namd_files.values() if path and os.path.basename(path)]
             if file_paths:
-                logger.info(f"NAMD conversion successful. Files created: {', '.join(os.path.basename(f) for f in file_paths)}")
+                logger.info(f"MSI2NAMD conversion successful. Files created: {', '.join(os.path.basename(f) for f in file_paths)}")
             else:
-                logger.warning("NAMD conversion completed but no output files were found.")
+                logger.warning("MSI2NAMD conversion completed but no output files were found.")
             
         except (ValueError, RuntimeError) as e:
-            logger.error(f"NAMD conversion failed: {str(e)}")
+            logger.error(f"MSI2NAMD conversion failed: {str(e)}")
             
             # Using the global workspace now, no need for tool-specific messages
             
@@ -400,6 +400,46 @@ class MolecularPipeline:
         self._save_debug_files()
         
         return self
+        
+    def convert_to_namd(self, 
+                       output_dir: Optional[str] = None, 
+                       residue_name: Optional[str] = None,
+                       parameter_file: Optional[str] = None,
+                       charge_groups: bool = False,
+                       cleanup_workspace: bool = True,
+                       **kwargs) -> 'MolecularPipeline':
+        """
+        Convert the current system to NAMD format using MSI2NAMD.
+        
+        DEPRECATED: This method has been renamed to msi2namd() for consistency.
+        This method will be removed in a future version.
+        
+        Args:
+            output_dir (str, optional): Directory to store output files. Default is current directory.
+            residue_name (str, optional): Residue name to use in the output PDB file.
+            parameter_file (str, optional): Path to a parameter file for the conversion.
+            charge_groups (bool, optional): Whether to include charge groups. Default is False.
+            cleanup_workspace (bool, optional): Whether to clean up the workspace. Default is True.
+            **kwargs: Additional parameters to pass to MSI2NAMD.
+            
+        Returns:
+            MolecularPipeline: Self reference for method chaining.
+            
+        Raises:
+            ValueError: If no system has been loaded.
+            RuntimeError: If the conversion fails.
+        """
+        logger.warning("The 'convert_to_namd' method is deprecated and will be removed in a future version. "
+                     "Please use 'msi2namd' instead, which provides the same functionality.")
+        
+        return self.msi2namd(
+            output_dir=output_dir,
+            residue_name=residue_name,
+            parameter_file=parameter_file,
+            charge_groups=charge_groups,
+            cleanup_workspace=cleanup_workspace,
+            **kwargs
+        )
     
     def save_checkpoint(self, checkpoint_file: str) -> 'MolecularPipeline':
         """

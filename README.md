@@ -79,12 +79,12 @@ The mapping file should be a JSON file mapping force-field types to charges:
 }
 ```
 
-#### NAMD Conversion
+#### MSI2NAMD Conversion
 
 Convert Material Studio files to NAMD format (PDB/PSF) using the MSI2NAMD external tool:
 
 ```bash
-python -m src.cli convert-to-namd --mdf input.mdf --car input.car --output-dir namd_output --residue-name MOL
+python -m src.cli msi2namd --mdf input.mdf --car input.car --output-dir namd_output --residue-name MOL
 ```
 
 #### Packmol Integration
@@ -153,13 +153,13 @@ from src.pipeline import MolecularPipeline
     .generate_grid(grid_dims=(8, 8, 8), gap=2.0)
     .save('output.car', 'output.mdf', 'MOL'))
 
-# Convert to NAMD format
+# Convert to NAMD format using MSI2NAMD
 (MolecularPipeline()
     .load('molecule.car', 'molecule.mdf')
-    .convert_to_namd(
+    .msi2namd(
         output_dir='namd_output',
         residue_name='MOL',
-        parameter_file='params.prm',  # Optional
+        parameter_file='params.prm',  # Required
         charge_groups=False,
         cleanup_workspace=True
     ))

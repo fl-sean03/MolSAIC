@@ -131,9 +131,22 @@ def main():
     update_charges_parser.add_argument("--output-car", help="Output CAR file")
     update_charges_parser.add_argument("--mapping", required=True, help="JSON mapping file")
     
-    # Convert to NAMD subcommand (object-mode only)
-    namd_parser = subparsers.add_parser("convert-to-namd", 
+    # MSI2NAMD subcommand
+    msi2namd_parser = subparsers.add_parser("msi2namd", 
                                       help="Convert files to NAMD format (PDB/PSF) using MSI2NAMD")
+    msi2namd_parser.add_argument("--mdf", required=True, help="Input MDF file")
+    msi2namd_parser.add_argument("--car", required=True, help="Input CAR file")
+    msi2namd_parser.add_argument("--output-dir", default="namd_output", 
+                         help="Output directory for NAMD files (default: namd_output)")
+    msi2namd_parser.add_argument("--residue-name", help="Residue name for NAMD files (max 4 characters)")
+    msi2namd_parser.add_argument("--parameter-file", required=True, 
+                         help="Parameter file for MSI2NAMD conversion (REQUIRED)")
+    msi2namd_parser.add_argument("--charge-groups", action="store_true", 
+                         help="Include charge groups in conversion (-cg flag)")
+                         
+    # Deprecated: Convert to NAMD subcommand (kept for backward compatibility)
+    namd_parser = subparsers.add_parser("convert-to-namd", 
+                                      help="[DEPRECATED] Convert files to NAMD format (PDB/PSF) - use msi2namd instead")
     namd_parser.add_argument("--mdf", required=True, help="Input MDF file")
     namd_parser.add_argument("--car", required=True, help="Input CAR file")
     namd_parser.add_argument("--output-dir", default="namd_output", 
@@ -533,12 +546,17 @@ def main():
             logger.info(f"Logs available in workspace: {config.session_workspace.current_workspace}")
             return 1
             
-    elif args.command == "convert-to-namd":
-        logger.info("Executing NAMD conversion command...")
+    elif args.command == "msi2namd" or args.command == "convert-to-namd":
+        # Show deprecation warning if using old command
+        if args.command == "convert-to-namd":
+            logger.warning("The 'convert-to-namd' command is deprecated and will be removed in a future version.")
+            logger.warning("Please use 'msi2namd' instead, which provides the same functionality.")
+            
+        logger.info("Executing MSI2NAMD conversion command...")
         
-        # NAMD conversion is only available in object mode
+        # MSI2NAMD conversion is only available in object mode
         if args.file_mode:
-            logger.error("NAMD conversion is only available in object-based mode")
+            logger.error("MSI2NAMD conversion is only available in object-based mode")
             return 1
         
         # Get base output directory name and handle enumeration if it exists
@@ -564,7 +582,7 @@ def main():
         
         # Update the argument with the absolute path
         args.output_dir = output_dir
-        logger.debug(f"Using NAMD output directory: {output_dir}")
+        logger.debug(f"Using MSI2NAMD output directory: {output_dir}")
         
         try:
             # Session workspace is already set up by the global flag processing
@@ -582,7 +600,8 @@ def main():
             # Convert to NAMD - respect global keep flags
             cleanup_workspace = not config.keep_all_workspaces
             
-            pipeline.convert_to_namd(
+            # Use the new method name
+            pipeline.msi2namd(
                 output_dir=args.output_dir,
                 residue_name=args.residue_name,
                 parameter_file=args.parameter_file,
@@ -596,10 +615,10 @@ def main():
                     file_size = os.path.getsize(file_path) / 1024  # Size in KB
                     logger.info(f"Generated {key}: {os.path.basename(file_path)} ({file_size:.1f} KB)")
             
-            logger.info(f"NAMD conversion successful. Output files in: {args.output_dir}")
+            logger.info(f"MSI2NAMD conversion successful. Output files in: {args.output_dir}")
             
         except Exception as e:
-            logger.error(f"NAMD conversion failed: {str(e)}")
+            logger.error(f"MSI2NAMD conversion failed: {str(e)}")
             # Keep workspace on error
             config.keep_session_workspace = True
             logger.info(f"Logs available in workspace: {config.session_workspace.current_workspace}")
