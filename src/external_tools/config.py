@@ -34,4 +34,4 @@ EXECUTABLES = {
 MAX_CONCURRENT_PROCESSES = int(os.environ.get('MOLSAIC_MAX_PROCESSES', '4'))
 
 # Timeouts (in seconds)
-DEFAULT_PROCESS_TIMEOUT = int(os.environ.get('MOLSAIC_PROCESS_TIMEOUT', '300'))  # 5 minutes
+DEFAULT_PROCESS_TIMEOUT = int(os.environ.get('MOLSAIC_PROCESS_TIMEOUT', '900'))  # 15 minutes

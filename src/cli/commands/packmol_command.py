@@ -46,6 +46,8 @@ class PackmolCommand(BaseCommand):
                             help="Execute Packmol after processing")
         parser.add_argument("--print-json", action="store_true",
                             help="Print configuration as JSON and exit")
+        parser.add_argument("--timeout", type=int, default=900,
+                            help="Timeout in seconds for Packmol execution (default: 900 seconds)")
     
     def execute(self, args: argparse.Namespace) -> int:
         """
@@ -93,8 +95,10 @@ class PackmolCommand(BaseCommand):
                 result = packmol.execute(
                     input_file=args.input_file,
                     output_file=args.output_file,
-                    update_dict=update_dict
+                    update_dict=update_dict,
+                    timeout=args.timeout
                 )
+                self.logger.info(f"Using timeout of {args.timeout} seconds")
                 
                 # Check if execution was successful
                 if result['return_code'] == 0:

@@ -53,6 +53,34 @@
      - ✅ Replaced all CLI command examples
      - ✅ Double-checked for any remaining references to old names
 
+## Current Tasks - Bug Fixes and Enhancements
+
+### External Tool Integration Bug Fixes
+
+1. ✅ Fix Packmol execution issues
+   - ✅ Increase default timeout (from 300 to 900 seconds)
+   - ✅ Add an explicit `--timeout` parameter to the packmol command
+   - ✅ Fix issue with Packmol input file handling (added explicit `-i` flag to pass input file)
+   - ⬜ Add better error handling and reporting for Packmol execution
+
+2. ⬜ Improve external tool output capture and display
+   - ⬜ Update logging in `external_tools/base.py` to capture and display command output
+   - ⬜ Ensure stdout and stderr from external tools are properly logged
+   - ⬜ Add flag to display real-time output from external tools
+   - ⬜ Create a logging format that clearly distinguishes external tool output
+
+3. ⬜ Fix workspace retention issues
+   - ⬜ Debug why `--keep` flag isn't properly retaining files
+   - ⬜ Ensure workspace cleanup is properly conditional on the keep flags
+   - ⬜ Add verbose logging for workspace cleanup decisions
+   - ⬜ Test all workspace retention scenarios
+
+4. ⬜ Add diagnostic capabilities
+   - ⬜ Create a new `--verbose` or `--diagnostic` flag
+   - ⬜ When enabled, display more detailed logs about what's happening
+   - ⬜ Include file paths and command details in console output
+   - ⬜ Add ability to save diagnostic information to a separate log file
+
 ## Future Task Ideas
 
 | Priority | Task | Description |
