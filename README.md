@@ -33,7 +33,7 @@ pip install -e .
 
 ### Command Line Interface
 
-MolSAIC provides a CLI with several subcommands:
+MolSAIC provides a CLI with several subcommands using a modern, modular architecture:
 
 #### Grid Replication
 
@@ -50,7 +50,7 @@ This creates an 8×8×8 grid of molecules with a 2.0 Å gap between them.
 Update force-field types based on a mapping file:
 
 ```bash
-python -m src.cli update-ff --car input.car --output-car updated.car --mapping mapping.json
+python -m src.cli update-ff --mdf input.mdf --car input.car --output-mdf updated.mdf --output-car updated.car --mapping mapping.json
 ```
 
 The mapping file should be a JSON file with keys in the format `"(charge, element)"` and values as the new force-field type:
@@ -67,7 +67,7 @@ The mapping file should be a JSON file with keys in the format `"(charge, elemen
 Update atomic charges based on a force-field type mapping:
 
 ```bash
-python -m src.cli update-charges --mdf input.mdf --output-mdf updated.mdf --mapping charge_mapping.json
+python -m src.cli update-charges --mdf input.mdf --car input.car --output-mdf updated.mdf --output-car updated.car --mapping charge_mapping.json
 ```
 
 The mapping file should be a JSON file mapping force-field types to charges:
@@ -84,8 +84,10 @@ The mapping file should be a JSON file mapping force-field types to charges:
 Convert Material Studio files to NAMD format (PDB/PSF) using the MSI2NAMD external tool:
 
 ```bash
-python -m src.cli msi2namd --mdf input.mdf --car input.car --output-dir namd_output --residue-name MOL
+python -m src.cli msi2namd --mdf input.mdf --car input.car --output-dir namd_output --residue-name MOL --parameter-file params.prm
 ```
+
+**Note**: The `--parameter-file` option is required for MSI2NAMD conversion.
 
 #### Packmol Integration
 
@@ -105,10 +107,15 @@ python -m src.cli packmol --input-file system.inp --execute
 python -m src.cli packmol --input-file system.inp --update-file updates.json --output-file modified.inp --execute
 ```
 
-Additional options:
-- `--parameter-file`: Specify a parameter file for conversion
-- `--charge-groups`: Include charge groups in conversion
-- `--keep-workspace`: Keep the workspace directory after conversion (for debugging)
+Additional Packmol options:
+- `--timeout`: Timeout in seconds for Packmol execution (default: 900 seconds)
+- `--continue-on-timeout`: Continue execution if timeout occurs and use partial results if available
+- `--continue-on-error`: Continue execution even if Packmol fails
+
+Global options for all commands:
+- `--keep`: Keep all artifacts after completion (logs and workspaces)
+- `--keep-logs`: Keep only logs after completion (cleanup workspaces)
+- `--charge-groups`: Include charge groups in conversion (for MSI2NAMD)
 
 #### Processing Modes
 
@@ -128,13 +135,7 @@ You can enable debug output for intermediate steps with the `--debug-output` fla
 python -m src.cli update-ff --debug-output --debug-prefix "debug_" --mdf input.mdf --car input.car --output-mdf output.mdf --output-car output.car --mapping mapping.json
 ```
 
-If you need to use the legacy file-based approach, you can use the `--file-mode` flag, but note that this mode is deprecated and will be removed in version 2.0.0:
-
-```bash
-python -m src.cli grid --file-mode --mdf input.mdf --car input.car --grid 8 --gap 2.0 --output-mdf grid_box.mdf --output-car grid_box.car
-```
-
-> **DEPRECATED**: The file-based approach is deprecated and will be removed in version 2.0.0. Please use the object-based pipeline as shown above.
+**Note**: The object-based mode requires both `--mdf` and `--car` parameters when loading data.
 
 ### Python API
 
@@ -216,27 +217,7 @@ pipeline.generate_grid(grid_dims=(8, 8, 8), gap=2.0)  # Creates debug_3_*.car/md
 pipeline.save('output.car', 'output.mdf')
 ```
 
-#### Legacy File-Based API (Deprecated)
-
-> **DEPRECATED**: The file-based approach is deprecated and will be removed in version 2.0.0.
-
-While it is not recommended, you can still use the legacy file-based API programmatically if absolutely necessary:
-
-```python
-from src.transformers.legacy.grid import generate_grid_files
-
-# Generate a grid from input files (deprecated)
-generate_grid_files(
-    car_file="input.car",
-    mdf_file="input.mdf",
-    output_car="grid_box.car",
-    output_mdf="grid_box.mdf",
-    grid_dims=(8, 8, 8),
-    gap=2.0
-)
-```
-
-**Migration Guide**
+#### Migration Guide
 
 A detailed guide for migrating from the deprecated file-based API to the recommended object-based API is available in the [Migration Guide](docs/tutorials/migration_guide.md).
 

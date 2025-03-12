@@ -9,11 +9,11 @@ from typing import Dict, Type
 from molsaic.cli.base import BaseCommand
 
 # Import command classes here
-# from .grid_command import GridCommand
-# from .update_ff_command import UpdateFFCommand
-# from .update_charges_command import UpdateChargesCommand
+from .grid_command import GridCommand
+from .update_ff_command import UpdateFFCommand
+from .update_charges_command import UpdateChargesCommand
 from .packmol_command import PackmolCommand
-# from .namd_command import ConvertNAMDCommand
+from .msi2namd_command import MSI2NAMDCommand
 
 def get_commands() -> Dict[str, Type[BaseCommand]]:
     """
@@ -24,9 +24,9 @@ def get_commands() -> Dict[str, Type[BaseCommand]]:
     """
     return {
         # Command name -> Command class mapping
-        # "grid": GridCommand,
-        # "update-ff": UpdateFFCommand,
-        # "update-charges": UpdateChargesCommand,
+        "grid": GridCommand,
+        "update-ff": UpdateFFCommand,
+        "update-charges": UpdateChargesCommand,
         "packmol": PackmolCommand,
-        # "convert-to-namd": ConvertNAMDCommand,
+        "msi2namd": MSI2NAMDCommand,
     }

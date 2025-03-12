@@ -4,6 +4,9 @@ Command-line interface for the Packmol tool integration.
 
 This module provides a command-line interface for parsing, modifying,
 and executing Packmol input files.
+
+DEPRECATED: This standalone CLI implementation is deprecated and will be removed in a future version.
+Please use the modular CLI implementation in src/cli/commands/packmol_command.py instead.
 """
 
 import os
@@ -84,7 +87,17 @@ def parse_args():
 def main():
     """
     Main entry point for the Packmol CLI.
+    
+    DEPRECATED: This implementation is deprecated. Use the modular CLI implementation
+    in src/cli/commands/packmol_command.py instead.
     """
+    # Show deprecation warning
+    import warnings
+    warnings.warn(
+        "This standalone CLI implementation is deprecated and will be removed in a future version. "
+        "Please use 'molsaic packmol' instead, which provides the same functionality.",
+        DeprecationWarning, stacklevel=2
+    )
     args = parse_args()
     setup_logging(args.verbose, args.log_file)
     logger = logging.getLogger(__name__)

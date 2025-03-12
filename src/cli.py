@@ -1,6 +1,10 @@
 """
 Command-line interface module for MolSAIC.
 Provides entry point for command-line operations.
+
+DEPRECATED: This monolithic CLI implementation is deprecated and will be removed in a future version.
+Please use the modular implementation in the 'src/cli/' directory. The functionality is identical,
+but the new implementation provides better modularity and extensibility.
 """
 
 import argparse
@@ -51,7 +55,17 @@ def copy_output_file(source_file: str, output_dir: str, suffix: str = None) -> s
 def main():
     """
     Main entry point for the CLI.
+    
+    DEPRECATED: This implementation is deprecated. Use the modular implementation
+    in the 'src/cli/' directory instead.
     """
+    # Show deprecation warning
+    import warnings
+    warnings.warn(
+        "This monolithic CLI implementation is deprecated and will be removed in a future version. "
+        "Please use the modular implementation in the 'src/cli/' directory.",
+        DeprecationWarning, stacklevel=2
+    )
     # Set up logging right away to capture all logs
     config.setup_logging()
     
